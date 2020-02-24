@@ -1,0 +1,12 @@
+{% if account != nil %}
+
+	{% assign suppliers_update = "update_supplier" | db_update_one: company_id: account._id, name: params.name, _id: params.id %}
+
+	{% if suppliers_update.matched_count != 1 %}
+		alertify.error("{{ l.not_found }}");
+	{% elsif suppliers_update.updated_count != 1 %}
+		alertify.message("{{ l.not_updated }}");
+	{% else %}
+		alertify.success("{{ l.updated }}");
+	{% endif %}
+{% endif %}

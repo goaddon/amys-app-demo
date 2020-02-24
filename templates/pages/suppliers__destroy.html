@@ -1,0 +1,13 @@
+{% if account != nil %}
+
+	{% assign suppliers_deletion = "destroy_supplier" | db_delete_one: company_id: account._id, _id: params.id %}
+
+	{% if suppliers_deletion.destroyed_count != 1 %}
+		alertify.error("{{ l.not_destroyed }}");
+	{% else %}
+		var supplier = $('[data-id="' + "{{ params.id }}" + '"]');
+		supplier.prev("hr").remove();
+		supplier.remove();
+		alertify.message("{{ l.destroyed }}");
+	{% endif %}
+{% endif %}
