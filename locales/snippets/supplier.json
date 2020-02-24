@@ -2,7 +2,8 @@
 	"en": {
 		"headline": "Supplier",
 		"placeholders": {
-			"name": "Enter supplier name..."
+			"name": "Enter supplier name...",
+			"url": "Enter URL of inventory list..."
 		},
 		"buttons": {
 			"update": "Update"
