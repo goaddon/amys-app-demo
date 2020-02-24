@@ -1,6 +1,10 @@
 {
 	"en": {
 		"headline": "Supplier",
+		"labels": {
+			"name": "Name",
+			"url": "Inventory list URL"
+		},
 		"placeholders": {
 			"name": "Enter supplier name...",
 			"url": "Enter URL of inventory list..."
