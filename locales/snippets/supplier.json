@@ -1,8 +1,8 @@
 {
 	"en": {
-		"headline": "Tasks",
+		"headline": "Suppliers",
 		"placeholders": {
-			"name": "Enter task name..."
+			"name": "Enter supplier name..."
 		},
 		"buttons": {
 			"create": "Create"
