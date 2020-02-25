@@ -1,0 +1,16 @@
+<div class="text-center mt-5">
+  <h2>
+		<p>{{ variants_count }}</p>
+		<p>
+			{% if variants_count == 1 %}
+				{{ l.product }}
+			{% else %}
+				{{ l.products }}
+			{% endif %}
+			&nbsp;{{ l.out_of_stock }}
+		</p>
+  </h2>
+  <a href="{{ 'purchases__index' | path_for }}">
+  	<button type="button" class="btn btn-primary btn-lg ml-2">{{ l.compare }}</button>
+  </a>
+</div>

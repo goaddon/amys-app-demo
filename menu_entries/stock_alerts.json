@@ -1,0 +1,15 @@
+{
+	"title": {
+		"en": "Stock alerts"
+	},
+	"index": 0,
+	"paths": [
+		{
+			"controller": "stock_alerts",
+			"action": "index"
+		},
+		{
+			"controller": "stock_alerts"
+		}
+	]
+}
