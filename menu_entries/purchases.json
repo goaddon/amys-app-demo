@@ -1,0 +1,15 @@
+{
+	"title": {
+		"en": "purchases"
+	},
+	"index": 0,
+	"paths": [
+		{
+			"controller": "purchases",
+			"action": "index"
+		},
+		{
+			"controller": "purchases"
+		}
+	]
+}
