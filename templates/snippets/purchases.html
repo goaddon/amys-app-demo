@@ -1,0 +1,9 @@
+<p>{{ variants_count }}</p>
+<p>
+	{% if variants_count == 1 %}
+		{{ l.product }}
+	{% else %}
+		{{ l.products }}
+	{% endif %}
+	{{ l.out_of_stock }}
+</p>

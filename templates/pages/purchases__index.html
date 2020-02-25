@@ -1,11 +1,7 @@
 {% if account != nil %}
 
-	{% assign variants_query 		= "variants" | db_find: company_id: account._id %}
-	{% assign variants 					= variants_query.results %}
-
-	{% for variant in variants %}
-		<p>{{ variant }}</p>
-	{% endfor %}
+	{% assign variants_query 		= "variants" | db_count: company_id: account._id %}
+	{% assign variants_count 		= variants_query.results_count %}
 
 	{% include "purchases" %}
 
