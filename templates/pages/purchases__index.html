@@ -32,10 +32,14 @@
 						{% assign response_sku 		= response_item[0] | encrypt %}
 						{% assign response_name 	= response_item[1].name | encrypt %}
 						{% assign response_stock 	= response_item[1].stock %}
-
 						{% assign response_price 	= response_item[1].price %}
 						{% assign item 						= items[response_sku] %}
+
 						<p>item: {{ item }}</p>
+
+						{% if item.stock != response_stock %}
+							<p>stock: {{ item.stock }} != {{ response_stock }}</p>
+						{% endif %}
 
 						{% if item == nil %}
 
