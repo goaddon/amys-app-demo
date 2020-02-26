@@ -13,10 +13,9 @@
 			{% assign array 		= "" | split: " " %}
 
 			{% for variant in variants %}
-				{% assign matchups 	= matchups | push_to_hash: variant.sku, array %}
+				{% assign matchups = matchups | push_to_hash: variant[0], array %}
 			{% endfor %}
 
-			<p>matchups: {{ matchups }}</p>
 			{% assign suppliers = suppliers_query.results %}
 			<p>suppliers: {{ suppliers }}</p>
 
@@ -87,7 +86,7 @@
 				{% for item in matchup[1] %}
 					{% if 0 > stock %}
 						{% assign purchase 						= stock | at_most: item.stock %}
-						{% assign stock 							= stock | plus: purchase %}
+						{% assign stock 							= stock | plus: purchase %}
 						{% assign purchased_item 			= nil | new_hash: item_id: item[0], sku: sku, count: purchase %}
 						{% assign supplier_purchases 	= item.supplier_id | push_to_array: purchased_item %}
 						{% assign purchases 					= purchases | push_to_hash: item.supplier_id, supplier_purchases %}
