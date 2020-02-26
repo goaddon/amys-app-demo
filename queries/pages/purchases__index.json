@@ -56,26 +56,33 @@
 			"_id": "{{ _id }}"
 		},
 		"document": {
-			"name": "{{ name }}"
+			"name": "{{ name }}",
+			"stock": "{{ stock }}",
+			"price": "{{ price }}"
 		}
 	},
-  "destroy_item": {
-    "klass": "items",
-    "query": {
-      "company_id": "{{ company_id }}",
-      "_id": "{{ _id }}"
-    }
+  "soft_delete_item": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"_id": "{{ _id }}"
+		},
+		"document": {
+			"stock": null
+		}
   },
 	"matchable_items": {
 		"klass": "items",
 		"query": {
 			"company_id": "{{ company_id }}",
+			"stock": {"$ne": null},
 			"sku": {"$in": "{{ skus }}"}
 		},
 		"projection": {
 			"_id": 1,
 			"sku": 1,
-			"stock": 1
+			"stock": 1,
+			"supplier_id": 1
 		}
 	}
 }
