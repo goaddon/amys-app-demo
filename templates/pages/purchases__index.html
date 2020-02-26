@@ -37,10 +37,21 @@
 						{% assign item 						= items[response_sku] %}
 
 						{% if item == nil %}
-							{% assign items_create 		= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+
+							{% assign items_create = "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+
 						{% else if item.name != response_name or item.stock != response_stock or item.price != response_price %}
+							{% if item.name != response_name %}
+							<p>name: {{item.name}} != {{response_name}}</p>
+							{% else if item.stock != response_stock %}
+							<p>stock: {{item.stock}} != {{response_stock}}</p>
+							{% else if item.price != response_price %}
+							<p>price: {{item.price}} != {{response_price}}</p>
+							{% endif %}
 							{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+
 							<p>items_update: {{ items_update }}</p>
+
 						{% endif %}
 					{% endfor %}
 
