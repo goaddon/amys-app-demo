@@ -33,6 +33,9 @@
 						{% assign response_sku 		= response_item[0] | encrypt %}
 						{% assign response_name 	= response_item[1].name | encrypt %}
 						{% assign response_stock 	= response_item[1].stock %}
+						{% if response_stock != nil %}
+							{% assign response_stock = response_stock | plus: 0 %}
+						{% endif %}
 						{% assign response_price 	= response_item[1].price %}
 						{% assign item 						= items[response_sku] %}
 
