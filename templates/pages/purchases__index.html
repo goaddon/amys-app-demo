@@ -9,8 +9,13 @@
 		{% if suppliers_query.results_count > 0 %}
 
 			{% assign variants 	= variants_query.results | to_hash: "sku" %}
-			<p>variants: {{ variants }}</p>
-			{% assign matchups 	= variants_query.results | to_hash_group: "sku" %}
+			{% assign matchups 	= nil | new_hash %}
+			{% assign array 		= "" | split: " " %}
+
+			{% for variant in variants %}
+				{% assign matchups 	= matchups | push_to_hash: variant.sku, array %}
+			{% endfor %}
+
 			<p>matchups: {{ matchups }}</p>
 			{% assign suppliers = suppliers_query.results %}
 			<p>suppliers: {{ suppliers }}</p>
