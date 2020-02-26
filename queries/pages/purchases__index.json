@@ -70,9 +70,7 @@
 		"klass": "items",
 		"query": {
 			"company_id": "{{ company_id }}",
-			"sku": {
-				"$in": "{{ skus }}"
-			}
+			"sku": {"$in": "{{ skus }}"}
 		},
 		"projection": {
 			"_id": 1,

@@ -54,18 +54,19 @@
 						{% endif %}
 
 					{% endfor %}
-				{% else %}
-					<p>Request failed</p>
 				{% endif %}
 			{% endfor %}
 
 			{% assign skus = "" %}
 			{% for variant in variants %}
-				{% capture skus %}{{ skus }} {{ variant.sku }}{% endcapture %}
+				{% capture skus %}{{ skus }} {{ variant[0] }}{% endcapture %}
 			{% endfor %}
 			{% assign skus 									= skus | split: " " %}
+
 			<p>skus: {{ skus }}</p>
+
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
+			<p>matchable_items_query: {{ matchable_items_query }}</p>
 			{% assign matchable_items 			= matchable_items_query.results %}
 			<p>matchable_items: {{ matchable_items }}</p>
 
