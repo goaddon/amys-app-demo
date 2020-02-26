@@ -92,21 +92,35 @@
 			<p>matchups after: {{ matchups }}</p>
 
 
-			{% assign purchases = suppliers | to_hash: "_id" %}
+			{% assign purchases = nil | new_hash %}
+			{% assign array 		= "" | split: " " %}
+
+			{% for supplier in suppliers %}
+				{% assign purchases = purchases | push_to_hash: supplier._id, array %}
+			{% endfor %}
 
 			{% for matchup in matchups %}
-				{% assign sku 	= matchup[0] %}
-				{% assign stock = variants[sku].stock %}
-				{% for item in matchup[1] %}
-					{% if 0 > stock %}
-						{% assign purchase 						= stock | abs | at_most: item.stock %}
-						{% assign stock 							= stock | plus: purchase %}
-						{% assign purchased_item 			= nil | new_hash: item_id: item._id, sku: sku, amount: purchase %}
-						{% assign supplier_purchases 	= item.supplier_id | push_to_array: purchased_item %}
-						{% assign purchases 					= purchases | push_to_hash: item.supplier_id, supplier_purchases %}
-					{% endif %}
-				{% endfor %}
+				{% if matchup[1].size > 0 %}
+					{% assign sku 	= matchup[0] %}
+					<p>sku: {{ sku }}</p>
+					{% assign stock = variants[sku].stock %}
+					<p>stock: {{ stock }}</p>
+					{% for item in matchup[1] %}
+						{% if 0 > stock %}
+							{% assign purchase 						= stock | abs | at_most: item.stock %}
+							<p>purchase: {{ purchase }}</p>
+							{% assign stock 							= stock | plus: purchase %}
+							{% assign purchased_item 			= nil | new_hash: item_id: item._id, sku: sku, amount: purchase %}
+							<p>purchased_item: {{ purchased_item }}</p>
+							{% assign item_supplier_id 		= item.supplier_id %}
+							{% assign supplier_purchases 	= purchases[item_supplier_id] | push_to_array: purchased_item %}
+							<p>supplier_purchases: {{ supplier_purchases }}</p>
+							{% assign purchases 					= purchases | push_to_hash: item.supplier_id, supplier_purchases %}
+						{% endif %}
+					{% endfor %}
+				{% endif %}
 			{% endfor %}
+
 			<p>purchases: {{ purchases }}</p>
 
 
