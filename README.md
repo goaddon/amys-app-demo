@@ -1,2 +1,2 @@
 # amys-app-demo
-The source code for Goaddon's demo video.
+The source code for Goaddon's demo video. It is a MVP in the truest sense of the word, put together with only a few hours of work. Before you decide to fork this project, please note that lot's of optimization is due.
