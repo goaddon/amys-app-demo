@@ -22,7 +22,7 @@
 			{% for supplier in suppliers %}
 
 				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
-
+				<p>inventory_response: {{ inventory_response }}</p>
 				{% if inventory_response.code == 200 %}
 
 					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}

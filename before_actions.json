@@ -1,8 +1,10 @@
 {
 	"authenticate": {
-		"unauthenticated": false
+		"unauthenticated": false,
+		"api": false
 	},
 	"container": {
-		"static_pages__index": "unauthenticated"
+		"static_pages__index": "unauthenticated",
+		"supplier_1_items__index": "api"
 	}
 }
