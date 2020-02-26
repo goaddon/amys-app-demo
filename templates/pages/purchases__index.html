@@ -30,14 +30,13 @@
 
 					{% for response_item in inventory_response.body %}
 
-						{% assign response_sku 	= response_item[0] | encrypt %}
-						{% assign item 					= items[response_sku] %}
+						{% assign response_sku 		= response_item[0] | encrypt %}
+						{% assign response_name 	= response_item[1].name | encrypt %}
+						{% assign response_stock 	= response_item[1].stock %}
+						{% assign response_price 	= response_item[1].price %}
+						{% assign item 						= items[response_sku] %}
 
 						{% if item == nil %}
-
-							{% assign response_name 	= response_item[1].name | encrypt %}
-							{% assign response_stock 	= response_item[1].stock %}
-							{% assign response_price 	= response_item[1].price %}
 							{% assign items_create 		= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 						{% else if item.name != response_name or item.stock != response_stock or item.price != response_price %}
 							{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
@@ -47,7 +46,7 @@
 
 					{% for item in items %}
 
-						{% assign sku = item.sku | decrypt %}
+						{% assign sku = item[0] | decrypt %}
 
 						{% if inventory_response.body[sku] == nil %}
 							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
