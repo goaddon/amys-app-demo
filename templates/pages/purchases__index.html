@@ -26,7 +26,7 @@
 
 					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}
 					{% assign items 			= items_query.results | to_hash: "sku" %}
-
+					<p>items: {{ items }}</p>
 					{% for response_item in inventory_response.body %}
 
 						{% assign response_sku 		= response_item[0] | encrypt %}
@@ -35,21 +35,23 @@
 						{% assign response_price 	= response_item[1].price %}
 						{% assign item 						= items[response_sku] %}
 
-						<p>item: {{ item }}</p>
-
-						{% if item.stock != response_stock %}
-							<p>stock: {{ item.stock }} != {{ response_stock }}</p>
-						{% endif %}
-
 						{% if item == nil %}
 
 							{% assign items_create = "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 
-						{% else if item.name != response_name or item.stock != response_stock or item.price != response_price %}
+						{% else %}
 
-							{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+								{% assign name_test = item.name == response_name %}
+								{% assign stock_test = item.stock == response_stock %}
+								{% assign price_test = item.price == response_price %}
 
-							<p>items_update: {{ items_update }}</p>
+							 {% if name_test and stock_test and price_test %}
+							 {% else %}
+
+								{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+
+								<p>items_update: {{ items_update }}</p>
+							{% endif %}
 
 						{% endif %}
 					{% endfor %}
@@ -79,15 +81,13 @@
 			{% for matchable_item in matchable_items %}
 				{% assign sku = matchable_item.sku %}
 				{% if matchups[sku] != nil %}
-					{% assign matchup_item 	= nil | new_hash: supplier_id: matchable_item.supplier_id, price: matchable_item.price, count: matchable_item.count %}
-					<p>matchable_item: {{ matchable_item }}</p>
-					<p>matchup_item: {{ matchup_item }}</p>
+					{% assign matchup_item 	= nil | new_hash: supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock %}
 					{% assign matchup_items = matchups[sku] | push_to_array: matchup_item %}
 					{% assign matchups 			= matchups | push_to_hash: sku, matchup_items %}
 				{% endif %}
 			{% endfor %}
 			<p>matchups: {{ matchups }}</p>
-			{% assign purchases = suppliers | to_hash: "_id" %}
+			{% assign purchases = suppliers | to_hash: "_id" %}
 
 			{% for matchup in matchups %}
 				{% assign sku 	= matchup[0] %}

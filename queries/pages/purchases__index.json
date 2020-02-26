@@ -82,6 +82,7 @@
 		"projection": {
 			"_id": 1,
 			"sku": 1,
+			"price": 1,
 			"stock": 1,
 			"supplier_id": 1
 		}
