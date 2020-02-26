@@ -38,6 +38,17 @@
 			"price": 1
 		}
 	},
+	"create_item": {
+		"klass": "items",
+		"document": {
+			"company_id": "{{ company_id }}",
+			"sku": "{{ sku }}",
+			"name": "{{ name }}",
+			"stock": "{{ stock }}",
+			"price": "{{ price }}",
+			"supplier_id": "{{ supplier_id }}"
+		}
+	},
 	"update_item": {
 		"klass": "items",
 		"query": {
