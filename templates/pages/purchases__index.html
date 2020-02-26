@@ -68,7 +68,9 @@
 			{% for matchable_item in matchable_items %}
 				{% assign sku = matchable_item.sku %}
 				{% if matchups[sku] != nil %}
-					{% assign matchup_item 	= nil | new_hash: supplier_id: supplier._id, price: matchable_item.price, count: matchable_item.count %}
+					{% assign matchup_item 	= nil | new_hash: supplier_id: matchable_item.supplier_id, price: matchable_item.price, count: matchable_item.count %}
+					<p>matchable_item: {{ matchable_item }}</p>
+					<p>matchup_item: {{ matchup_item }}</p>
 					{% assign matchup_items = matchups[sku] | push_to_array: matchup_item %}
 					{% assign matchups 			= matchups | push_to_hash: sku, matchup_items %}
 				{% endif %}
