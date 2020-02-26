@@ -41,9 +41,9 @@
 
 						{% else %}
 
-								{% assign name_test = item.name == response_name %}
-								{% assign stock_test = item.stock == response_stock %}
-								{% assign price_test = item.price == response_price %}
+								{% assign name_test 	= item.name == response_name %}
+								{% assign stock_test 	= item.stock == response_stock %}
+								{% assign price_test 	= item.price == response_price %}
 
 							 {% if name_test and stock_test and price_test %}
 							 {% else %}
@@ -77,16 +77,21 @@
 			{% assign skus 									= skus | split: " " %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
-
+			<p>matchable_items: {{ matchable_items }}</p>
+			<p>matchups before: {{ matchups }}</p>
 			{% for matchable_item in matchable_items %}
 				{% assign sku = matchable_item.sku %}
+
 				{% if matchups[sku] != nil %}
-					{% assign matchup_item 	= nil | new_hash: supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock %}
-					{% assign matchup_items = matchups[sku] | push_to_array: matchup_item %}
+					{% assign matchup_item 	= nil | new_hash: _id: matchable_item._id, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock %}
+					{% assign sku_matchups = matchups[sku] %}
+					{% assign matchup_items = sku_matchups | push_to_array: matchup_item %}
 					{% assign matchups 			= matchups | push_to_hash: sku, matchup_items %}
 				{% endif %}
 			{% endfor %}
-			<p>matchups: {{ matchups }}</p>
+			<p>matchups after: {{ matchups }}</p>
+
+
 			{% assign purchases = suppliers | to_hash: "_id" %}
 
 			{% for matchup in matchups %}
@@ -94,18 +99,17 @@
 				{% assign stock = variants[sku].stock %}
 				{% for item in matchup[1] %}
 					{% if 0 > stock %}
-						{% assign purchase 						= stock | at_most: item.stock %}
+						{% assign purchase 						= stock | abs | at_most: item.stock %}
 						{% assign stock 							= stock | plus: purchase %}
-						{% assign purchased_item 			= nil | new_hash: item_id: item[0], sku: sku, count: purchase %}
+						{% assign purchased_item 			= nil | new_hash: item_id: item._id, sku: sku, amount: purchase %}
 						{% assign supplier_purchases 	= item.supplier_id | push_to_array: purchased_item %}
 						{% assign purchases 					= purchases | push_to_hash: item.supplier_id, supplier_purchases %}
 					{% endif %}
 				{% endfor %}
 			{% endfor %}
 			<p>purchases: {{ purchases }}</p>
+
+
 		{% endif %}
 	{% endif %}
-
-	{% include "stock_alerts" %}
-
 {% endif %}
