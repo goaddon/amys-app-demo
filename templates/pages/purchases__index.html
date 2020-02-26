@@ -39,8 +39,9 @@
 							{% assign response_stock 	= response_item[1].stock %}
 							{% assign response_price 	= response_item[1].price %}
 							{% assign items_create 		= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
-						{% else if item.stock != response_stock or item.price != response_price %}
+						{% else if item.name != response_name or item.stock != response_stock or item.price != response_price %}
 							{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+							<p>items_update: {{ items_update }}</p>
 						{% endif %}
 					{% endfor %}
 
@@ -50,6 +51,7 @@
 
 						{% if inventory_response.body[sku] == nil %}
 							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
+							<p>item_deletion: {{ item_deletion }}</p>
 						{% endif %}
 
 					{% endfor %}
@@ -60,8 +62,8 @@
 			{% for variant in variants %}
 				{% capture skus %}{{ skus }} {{ variant[0] }}{% endcapture %}
 			{% endfor %}
-			{% assign skus 									= skus | split: " " %}
 
+			{% assign skus 									= skus | split: " " %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
 
