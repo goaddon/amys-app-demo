@@ -25,6 +25,19 @@
 			"url": 1
 		}
 	},
+	"items": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"supplier_id": "{{ supplier_id }}"
+		},
+		"projection": {
+			"_id": 1,
+			"sku": 1,
+			"stock": 1,
+			"price": 1
+		}
+	},
 	"update_item": {
 		"klass": "items",
 		"query": {
