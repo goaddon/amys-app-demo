@@ -76,7 +76,6 @@
 		"klass": "items",
 		"query": {
 			"company_id": "{{ company_id }}",
-			"stock": {"$ne": null},
 			"sku": {"$in": "{{ skus }}"}
 		},
 		"projection": {
@@ -84,7 +83,18 @@
 			"sku": 1,
 			"price": 1,
 			"stock": 1,
+			"ordered": 1,
 			"supplier_id": 1
+		}
+	},
+	"order_item": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"_id": "{{ _id }}"
+		},
+		"document": {
+			"ordered": "{{ ordered }}"
 		}
 	}
 }
