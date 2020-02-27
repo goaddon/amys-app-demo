@@ -3,7 +3,7 @@ Hello
 	<tbody>
 		{% for supplier_order_line in supplier_order_lines %}
 			<tr>
-				<td>{{ supplier_order_line.sku | decrypt }}</td>
+				<td>{{ supplier_order_line.sku | decrypt }}</td>
 				<td>{{ supplier_order_line.amount }}</td>
 			</tr>
 		{% endfor %}
