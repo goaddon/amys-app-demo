@@ -150,7 +150,7 @@
 			{% for supplier_order in supplier_orders %}
 				{% if supplier_order[1].size > 0 %}
 					{% assign send_result = "supplier_order" | send_email: to: supplier.email, display_name: "Please add to our order", supplier_order_lines: supplier_order[1] %}
-				{% endfor %}
+				{% endif %}
 			{% endfor %}
 		{% endif %}
 	{% endif %}
