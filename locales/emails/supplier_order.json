@@ -4,6 +4,7 @@
 		"greeting": "Hello",
 		"intro": "Please add the following items to our current order.",
 		"sku": "SKU",
+		"name": "Name",
 		"amount": "Amount"
 	}
 }

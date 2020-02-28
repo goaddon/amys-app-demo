@@ -1,5 +1,8 @@
 {% if account != nil %}
 
+	{% assign suppliers 				= "" | split: " " %}
+	{% assign suppliers_orders 	= nil | new_hash %}
+
 	{% assign variants_query = "variants" | db_find: company_id: account._id %}
 
 	{% if variants_query.results_count > 0 %}
@@ -103,8 +106,6 @@
 			{% endfor %}
 			<p>matchups after: {{ matchups }}</p>
 
-
-			{% assign suppliers_orders = nil | new_hash %}
 			{% assign array 		= "" | split: " " %}
 
 			{% for supplier in suppliers %}
@@ -158,4 +159,5 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
+	{% include "purchases" %}
 {% endif %}
