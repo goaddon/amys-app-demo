@@ -11,22 +11,24 @@
 			{% assign suppliers 				= suppliers_query.results %}
 			{% assign suppliers_orders 	= nil | new_hash %}
 			{% assign variants 					= variants_query.results | to_hash: "sku" %}
-			{% assign matchups 					= nil | new_hash %}
+			{% assign variants_items 		= nil | new_hash %}
 			{% assign array 						= "" | split: " " %}
 
 			{% for variant in variants %}
-				{% assign matchups = matchups | push_to_hash: variant[0], array %}
+				{% assign variants_items = variants_items | push_to_hash: variant[0], array %}
 			{% endfor %}
 
 			{% for supplier in suppliers %}
 
 				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
+
 				<p>inventory_response: {{ inventory_response }}</p>
+
 				{% if inventory_response.code == 200 %}
 
 					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}
 					{% assign items 			= items_query.results | to_hash: "sku" %}
-					<p>items: {{ items }}</p>
+
 					{% for response_item in inventory_response.body %}
 
 						{% assign response_sku 		= response_item[0] | encrypt %}
@@ -37,7 +39,7 @@
 
 						{% if item == nil %}
 
-							{% assign items_create = "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+							{% assign items_create 	= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 
 						{% else %}
 
@@ -50,7 +52,6 @@
 
 								{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
 
-								<p>items_update: {{ items_update }}</p>
 							{% endif %}
 
 						{% endif %}
@@ -61,8 +62,9 @@
 						{% assign sku = item[0] | decrypt %}
 
 						{% if inventory_response.body[sku] == nil %}
+
 							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
-							<p>item_deletion: {{ item_deletion }}</p>
+
 						{% endif %}
 
 					{% endfor %}
@@ -70,6 +72,7 @@
 			{% endfor %}
 
 			{% assign skus = "" %}
+
 			{% for variant in variants %}
 				{% capture skus %}{{ skus }} {{ variant[0] }}{% endcapture %}
 			{% endfor %}
@@ -77,69 +80,76 @@
 			{% assign skus 									= skus | split: " " %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
+
 			<p>matchable_items: {{ matchable_items }}</p>
-			<p>matchups before: {{ matchups }}</p>
+
 			{% for matchable_item in matchable_items %}
+
 				{% assign sku = matchable_item.sku %}
 
-				{% if matchups[sku] != nil %}
-					{% assign item_ordered 	= matchable_item.ordered | plus: 0 %}
+				{% if variants_items[sku] != nil %}
+
+					{% assign item_ordered = matchable_item.ordered | plus: 0 %}
+
 					{% if item_ordered > 0 %}
+
 						{% assign variant 				= variants[sku] %}
 						{% assign variant_ordered = variant.ordered | plus: 0 %}
 						{% assign ordered 				= variant_ordered | plus: item_ordered %}
-						<p>ordered: {{ ordered }}</p>
 						{% assign variant 				= variant | push_to_hash: "ordered", ordered %}
 						{% assign variants 				= variants | push_to_hash: sku, variant %}
+
 					{% endif %}
 
 					{% if matchable_item.stock != nil %}
-						{% assign matchup_item 	= nil | new_hash: _id: matchable_item._id, name: matchable_item.name, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock, ordered: matchable_item.ordered %}
-						{% assign sku_matchups = matchups[sku] %}
-						{% assign matchup_items = sku_matchups | push_to_array: matchup_item %}
-						{% assign matchups 			= matchups | push_to_hash: sku, matchup_items %}
+
+						{% assign matchup_item 		= nil | new_hash: _id: matchable_item._id, name: matchable_item.name, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock, ordered: matchable_item.ordered %}
+						{% assign sku_matchups 		= variants_items[sku] %}
+						{% assign matchup_items 	= sku_matchups | push_to_array: matchup_item %}
+						{% assign variants_items 	= variants_items | push_to_hash: sku, matchup_items %}
+
 					{% endif %}
 				{% endif %}
 			{% endfor %}
-			<p>matchups after: {{ matchups }}</p>
 
-			{% assign array 		= "" | split: " " %}
+			<p>variants_items: {{ variants_items }}</p>
+
+			{% assign array = "" | split: " " %}
 
 			{% for supplier in suppliers %}
+
 				{% assign suppliers_orders = suppliers_orders | push_to_hash: supplier._id, array %}
+
 			{% endfor %}
 
-			{% for matchup in matchups %}
-				{% if matchup[1].size > 0 %}
-					{% assign sku 	= matchup[0] %}
-					<p>sku: {{ sku }}</p>
+			{% for variant_items in variants_items %}
+
+				{% if variant_items[1].size > 0 %}
+
+					{% assign sku 		= variant_items[0] %}
 					{% assign variant = variants[sku] %}
 					{% assign stock 	= variant.stock | plus: 0 %}
 					{% assign ordered = variant.ordered | plus: 0 %}
 					{% assign missing = stock | plus: ordered %}
-					<p>stock: {{ stock }}</p>
-					<p>ordered: {{ ordered }}</p>
-					<p>missing: {{ missing }}</p>
-					{% assign sorted_items = matchup[1] | sort: "price" %}
+					{% assign sorted_items = variant_items[1] | sort: "price" %}
+
 					<p>sorted_items: {{ sorted_items }}</p>
+
 					{% for item in sorted_items %}
 						{% if 0 > missing %}
-							{% assign purchase 						= missing | abs | at_most: item.stock %}
-							{% if purchase > 0 %}
-								<p>purchase: {{ purchase }}</p>
-								{% assign missing 						= missing | plus: purchase %}
-								{% assign purchased_item 			= nil | new_hash: item_id: item._id, sku: sku, name: item.name, amount: purchase %}
-								<p>purchased_item: {{ purchased_item }}</p>
-								{% assign item_supplier_id 		= item.supplier_id %}
-								{% assign supplier_orders 		= suppliers_orders[item_supplier_id] | push_to_array: purchased_item %}
-								<p>supplier_orders: {{ supplier_orders }}</p>
-								{% assign suppliers_orders 		= suppliers_orders | push_to_hash: item.supplier_id, supplier_orders %}
 
-								{% assign item_ordered = item.ordered | plus: 0 %}
-								<p>item_ordered: {{ item_ordered }}</p>
-								{% assign is_ordered = item_ordered | plus: purchase %}
-								<p>is_ordered: {{ is_ordered }}</p>
-								{% assign items_update 	= "order_item" | db_update_one: company_id: account._id, _id: item._id, ordered: is_ordered %}
+							{% assign orderable = missing | abs | at_most: item.stock %}
+
+							{% if orderable > 0 %}
+
+								{% assign missing 					= missing | plus: orderable %}
+								{% assign ordered_item 			= nil | new_hash: item_id: item._id, sku: sku, name: item.name, amount: orderable %}
+								{% assign item_supplier_id 	= item.supplier_id %}
+								{% assign supplier_orders 	= suppliers_orders[item_supplier_id] | push_to_array: ordered_item %}
+								{% assign suppliers_orders 	= suppliers_orders | push_to_hash: item.supplier_id, supplier_orders %}
+								{% assign item_ordered 			= item.ordered | plus: 0 %}
+								{% assign is_ordered 				= item_ordered | plus: orderable %}
+								{% assign items_update 			= "order_item" | db_update_one: company_id: account._id, _id: item._id, ordered: is_ordered %}
 							{% endif %}
 						{% endif %}
 					{% endfor %}
@@ -151,9 +161,7 @@
 				{% assign supplier_id 		= supplier._id %}
 				{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 				{% if supplier_order != nil and supplier_order.size > 0 %}
-					<p>supplier: {{ supplier }}</p>
 					{% assign send_result = "supplier_order" | send_email: to: supplier.mail_address, display_name: "Amys Outlet", supplier_name: supplier.name, supplier_order: supplier_order %}
-					<p>send_result: {{ send_result }}</p>
 				{% endif %}
 			{% endfor %}
 		{% endif %}
