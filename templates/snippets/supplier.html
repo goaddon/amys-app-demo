@@ -8,5 +8,9 @@
 		<label for="name">{{ l.labels.url }}</label>
 		<input class="form-control mr-3" type="text" name="url" placeholder="{{ l.placeholders.url }}" value="{{ supplier.url }}">
 	</div>
+	<div class="form-group">
+		<label for="name">{{ l.labels.mail_address }}</label>
+		<input class="form-control mr-3" type="text" name="mail_address" placeholder="{{ l.placeholders.mail_address }}" value="{{ supplier.mail_address }}">
+	</div>
 	<input class="btn btn-outline-primary" type="submit" value="{{ l.buttons.update }}">
 </form>

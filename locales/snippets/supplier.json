@@ -3,11 +3,13 @@
 		"headline": "Supplier",
 		"labels": {
 			"name": "Name",
-			"url": "Inventory list URL"
+			"url": "Inventory list URL",
+			"mail_address": "Mail address"
 		},
 		"placeholders": {
 			"name": "Enter supplier name...",
-			"url": "Enter URL of inventory list..."
+			"url": "Enter URL of inventory list...",
+			"mail_address": "Enter the mail address of the supplier"
 		},
 		"buttons": {
 			"update": "Update"

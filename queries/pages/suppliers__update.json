@@ -7,7 +7,8 @@
 		},
 		"document": {
 			"name": "{{ name }}",
-			"url": "{{ url }}"
+			"url": "{{ url }}",
+			"mail_address": "{{ mail_address }}"
 		}
 	}
 }
