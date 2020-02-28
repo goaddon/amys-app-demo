@@ -1,8 +1,5 @@
 {% if account != nil %}
 
-	{% assign suppliers 				= "" | split: " " %}
-	{% assign suppliers_orders 	= nil | new_hash %}
-
 	{% assign variants_query = "variants" | db_find: company_id: account._id %}
 
 	{% if variants_query.results_count > 0 %}
@@ -11,15 +8,15 @@
 
 		{% if suppliers_query.results_count > 0 %}
 
-			{% assign variants 	= variants_query.results | to_hash: "sku" %}
-			{% assign matchups 	= nil | new_hash %}
-			{% assign array 		= "" | split: " " %}
+			{% assign suppliers 				= suppliers_query.results %}
+			{% assign suppliers_orders 	= nil | new_hash %}
+			{% assign variants 					= variants_query.results | to_hash: "sku" %}
+			{% assign matchups 					= nil | new_hash %}
+			{% assign array 						= "" | split: " " %}
 
 			{% for variant in variants %}
 				{% assign matchups = matchups | push_to_hash: variant[0], array %}
 			{% endfor %}
-
-			{% assign suppliers = suppliers_query.results %}
 
 			{% for supplier in suppliers %}
 
@@ -123,7 +120,8 @@
 					<p>stock: {{ stock }}</p>
 					<p>ordered: {{ ordered }}</p>
 					<p>missing: {{ missing }}</p>
-					{% for item in matchup[1] %}
+					{% assign sorted_items = matchup[1] | sort: "price" %}
+					{% for item in sorted_items %}
 						{% if 0 > missing %}
 							{% assign purchase 						= missing | abs | at_most: item.stock %}
 							{% if purchase > 0 %}
