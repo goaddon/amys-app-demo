@@ -5,6 +5,7 @@
 	},
 	"container": {
 		"static_pages__index": "unauthenticated",
-		"supplier_1_items__index": "api"
+		"supplier_1_items__index": "api",
+		"supplier_2_items__index": "api"
 	}
 }
