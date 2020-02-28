@@ -1,4 +1,7 @@
 {
 	"en": {
+		"greeting": "Hello",
+		"sku": "SKU",
+		"amount": "Amount"
 	}
 }

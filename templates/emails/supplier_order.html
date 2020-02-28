@@ -1,6 +1,12 @@
-Hello {{ params.to }}
+{{ l.greeting }} {{ params.to }}
 {{ params }}
 <table>
+	<thead>
+		<tr>
+			<th>{{ l.sku }}</th>
+			<th>{{ l.amount }}</th>
+		</tr>
+	</thead>
 	<tbody>
 		{% for supplier_order_line in params.supplier_order %}
 			<tr>
