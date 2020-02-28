@@ -152,7 +152,7 @@
 				{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 				{% if supplier_order != nil and supplier_order.size > 0 %}
 					<p>supplier: {{ supplier }}</p>
-					{% assign send_result = "supplier_order" | send_email: to: supplier.mail_address, display_name: "Amys Outlet", supplier_order: supplier_order %}
+					{% assign send_result = "supplier_order" | send_email: to: supplier.mail_address, display_name: "Amys Outlet", supplier_name: supplier.name supplier_order: supplier_order %}
 					<p>send_result: {{ send_result }}</p>
 				{% endif %}
 			{% endfor %}
