@@ -2,7 +2,8 @@
 	{% assign supplier_id 		= supplier._id %}
 	{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 	{% if supplier_order != nil and supplier_order.size > 0 %}
-		<h6>{{ l.ordered_intro }} {{ supplier.name }}</h6>
+		<h6>{{ supplier.name }}</h6>
+		<p>{{ l.ordered }}</p>
 		<table class="table">
 			<thead>
 				<tr>
