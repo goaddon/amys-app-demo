@@ -121,6 +121,7 @@
 					<p>ordered: {{ ordered }}</p>
 					<p>missing: {{ missing }}</p>
 					{% assign sorted_items = matchup[1] | sort: "price" %}
+					<p>sorted_items: {{ sorted_items }}</p>
 					{% for item in sorted_items %}
 						{% if 0 > missing %}
 							{% assign purchase 						= missing | abs | at_most: item.stock %}
