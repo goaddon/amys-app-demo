@@ -27,6 +27,53 @@
 			"mail_address": 1
 		}
 	},
+	"items": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"supplier_id": "{{ supplier_id }}"
+		},
+		"projection": {
+			"_id": 1,
+			"sku": 1,
+			"name": 1,
+			"stock": 1,
+			"price": 1
+		}
+	},
+	"create_item": {
+		"klass": "items",
+		"document": {
+			"company_id": "{{ company_id }}",
+			"sku": "{{ sku }}",
+			"name": "{{ name }}",
+			"stock": "{{ stock }}",
+			"price": "{{ price }}",
+			"supplier_id": "{{ supplier_id }}"
+		}
+	},
+	"update_item": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"_id": "{{ _id }}"
+		},
+		"document": {
+			"name": "{{ name }}",
+			"stock": "{{ stock }}",
+			"price": "{{ price }}"
+		}
+	},
+  "soft_delete_item": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"_id": "{{ _id }}"
+		},
+		"document": {
+			"stock": null
+		}
+  },
 	"matchable_items": {
 		"klass": "items",
 		"query": {

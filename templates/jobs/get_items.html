@@ -1,0 +1,73 @@
+{% if account != nil %}
+
+	{% assign variants_query = "variants" | db_find: company_id: account._id %}
+
+	{% if variants_query.results_count > 0 %}
+
+		{% assign suppliers_query = "suppliers" | db_find: company_id: account._id %}
+
+		{% if suppliers_query.results_count > 0 %}
+
+			{% assign suppliers 				= suppliers_query.results %}
+			{% assign suppliers_orders 	= nil | new_hash %}
+			{% assign variants 					= variants_query.results | to_hash: "sku" %}
+			{% assign variants_items 		= nil | new_hash %}
+			{% assign array 						= "" | split: " " %}
+
+			{% for variant in variants %}
+				{% assign variants_items = variants_items | push_to_hash: variant[0], array %}
+			{% endfor %}
+
+			{% for supplier in suppliers %}
+
+				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
+
+				{% if inventory_response.code == 200 %}
+
+					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}
+					{% assign items 			= items_query.results | to_hash: "sku" %}
+
+					{% for response_item in inventory_response.body %}
+
+						{% assign response_sku 		= response_item[0] | encrypt %}
+						{% assign response_name 	= response_item[1].name | encrypt %}
+						{% assign response_stock 	= response_item[1].stock %}
+						{% assign response_price 	= response_item[1].price %}
+						{% assign item 						= items[response_sku] %}
+
+						{% if item == nil %}
+
+							{% assign items_create 	= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+
+						{% else %}
+
+								{% assign name_test 	= item.name == response_name %}
+								{% assign stock_test 	= item.stock == response_stock %}
+								{% assign price_test 	= item.price == response_price %}
+
+							 {% if name_test and stock_test and price_test %}
+							 {% else %}
+
+								{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+
+							{% endif %}
+
+						{% endif %}
+					{% endfor %}
+
+					{% for item in items %}
+
+						{% assign sku = item[0] | decrypt %}
+
+						{% if inventory_response.body[sku] == nil %}
+
+							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
+
+						{% endif %}
+
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+{% endif %}
