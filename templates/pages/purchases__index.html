@@ -5,6 +5,9 @@
 	{% if items_job.error != nil %}
 		<p>{{ l.job_not_started }}: {{ items_job.error }}</p>
 	{% else %}
+		<p>{{ items_job }}</p>
+		<p>{{ 'jobs__show' | path_for: id: '123' }}.json</p>
+		<p>{{ 'jobs__show' | path_for: id: items_job.job_id }}.json</p>
 		<div id="items_job_status"></div>
 		<script>
 			var checkGetItems;
