@@ -1,11 +1,11 @@
 {% if params.company_id != nil %}
-	<p>params: {{ params }}</p>
+
 	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
-	<p>{{ variants_query }}</p>
+	<p>variants_query: {{ variants_query }}</p>
 	{% if variants_query.results_count > 0 %}
 
 		{% assign suppliers_query = "suppliers" | db_find: company_id: params.company_id %}
-
+		<p>suppliers_query: {{ suppliers_query }}</p>
 		{% if suppliers_query.results_count > 0 %}
 
 			{% assign suppliers 				= suppliers_query.results %}
@@ -21,7 +21,7 @@
 			{% for supplier in suppliers %}
 
 				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
-
+				<p>inventory_response: {{ inventory_response }}</p>
 				{% if inventory_response.code == 200 %}
 
 					{% assign items_query = "items" | db_find: company_id: params.company_id, supplier_id: supplier._id %}
