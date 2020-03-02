@@ -1,7 +1,7 @@
 {% if params.company_id != nil %}
 
 	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
-
+	<p>{{ variants_query }}</p>
 	{% if variants_query.results_count > 0 %}
 
 		{% assign suppliers_query = "suppliers" | db_find: company_id: params.company_id %}
@@ -70,7 +70,4 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
-	{hello: "Ran"}
-{% else %}
-	{hello: "Nope"}
 {% endif %}
