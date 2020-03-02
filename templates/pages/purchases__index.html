@@ -1,11 +1,37 @@
 {% if account != nil %}
 
-	{% assign get_items_job_id = "get_items" | job_start: company_id: account._id %}
+	{% assign items_job = "get_items" | create_job: company_id: account._id %}
 
-	{% if get_items_job_id.error != nil %}
-		<p>{{ l.job_not_started }}: {{ get_items_job_id.error }}</p>
+	{% if items_job.error != nil %}
+		<p>{{ l.job_not_started }}: {{ items_job.error }}</p>
 	{% else %}
-		<div data-get-items-job-id="{{ get_items_job_id.job_id }}"></div>
+		<div id="items_job_status"></div>
+		<script>
+			var checkGetItems;
+
+			checkGetItems = function(timeout) {
+				return setTimeout((function() {
+					timeout = Math.min(60000, timeout);
+					return $.ajax({
+						type: "get",
+						dataType: "json",
+						url: "{{ 'jobs__show' | path_for: id: get_items_job_id.job_id }}.json",
+						success: function(data, status, xhr) {
+							if (data === null) {
+								return console.log("data is null");
+							} else {
+								$("#items_job_status").html(data.job_status);
+								if (data.job_status === null || data.job_status === "in_progress") {
+									return checkGetItems(timeout + 20);
+								}
+							}
+						}
+					});
+				}), timeout);
+			};
+
+			checkGetItems(500);
+		</script>
 	{% endif %}
 
 {% endif %}

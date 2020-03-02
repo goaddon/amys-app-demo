@@ -1,10 +1,10 @@
-{% if account != nil %}
+{% if params.company_id != nil %}
 
-	{% assign variants_query = "variants" | db_find: company_id: account._id %}
+	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
 
 	{% if variants_query.results_count > 0 %}
 
-		{% assign suppliers_query = "suppliers" | db_find: company_id: account._id %}
+		{% assign suppliers_query = "suppliers" | db_find: company_id: params.company_id %}
 
 		{% if suppliers_query.results_count > 0 %}
 
@@ -24,7 +24,7 @@
 
 				{% if inventory_response.code == 200 %}
 
-					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}
+					{% assign items_query = "items" | db_find: company_id: params.company_id, supplier_id: supplier._id %}
 					{% assign items 			= items_query.results | to_hash: "sku" %}
 
 					{% for response_item in inventory_response.body %}
@@ -37,7 +37,7 @@
 
 						{% if item == nil %}
 
-							{% assign items_create 	= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+							{% assign items_create 	= "create_item" | db_insert_one: company_id: params.company_id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 
 						{% else %}
 
@@ -48,7 +48,7 @@
 							 {% if name_test and stock_test and price_test %}
 							 {% else %}
 
-								{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
 
 							{% endif %}
 
@@ -61,7 +61,7 @@
 
 						{% if inventory_response.body[sku] == nil %}
 
-							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
+							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: params.company_id, _id: item._id %}
 
 						{% endif %}
 
@@ -70,4 +70,7 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
+	{hello: "Ran"}
+{% else %}
+	{hello: "Nope"}
 {% endif %}
