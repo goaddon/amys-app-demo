@@ -15,7 +15,7 @@
 					return $.ajax({
 						type: "get",
 						dataType: "json",
-						url: "{{ 'jobs__show' | path_for: id: get_items_job_id.job_id }}.json",
+						url: "{{ 'jobs__show' | path_for: id: items_job.job_id }}.json",
 						success: function(data, status, xhr) {
 							if (data === null) {
 								return console.log("data is null");
