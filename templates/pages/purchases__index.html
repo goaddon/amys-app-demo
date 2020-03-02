@@ -2,6 +2,10 @@
 
 	{% assign get_items_job_id = "get_items" | job_start: company_id: account._id %}
 
-	<div data-get-items-job-id="{{ get_items_job_id }}"></div>
+	{% if get_items_job_id.error != nil %}
+		<p>{{ l.job_not_started }}: {{ get_items_job_id.error }}</p>
+	{% else %}
+		<div data-get-items-job-id="{{ get_items_job_id.job_id }}"></div>
+	{% endif %}
 
 {% endif %}
