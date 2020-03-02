@@ -1,5 +1,5 @@
 {% if params.company_id != nil %}
-
+	<p>params: {{ params }}</p>
 	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
 	<p>{{ variants_query }}</p>
 	{% if variants_query.results_count > 0 %}
