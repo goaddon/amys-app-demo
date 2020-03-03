@@ -1,11 +1,11 @@
 {% if account != nil %}
 
-	{% assign items_job = "get_items" | create_job: company_id: account._id %}
+	{% assign job = "get_items" | create_job: company_id: account._id %}
 
-	{% if items_job.error != nil %}
-		<p>{{ l.job_not_started }}: {{ items_job.error }}</p>
+	{% if job.error != nil %}
+		<p>{{ l.job_not_started }}: {{ job.error }}</p>
 	{% else %}
-		<div id="items_job_status"></div>
+		<div id="job_status"></div>
 		<script>
 			var checkGetItems;
 
@@ -15,12 +15,12 @@
 					return $.ajax({
 						type: "get",
 						dataType: "json",
-						url: "{{ 'jobs__show' | path_for: id: items_job.job_id }}.json",
+						url: "{{ 'jobs__show' | path_for: id: job.job_id }}.json",
 						success: function(data, status, xhr) {
 							if (data === null) {
 								return console.log("data is null");
 							} else {
-								$("#items_job_status").html("created_items_count: " + data.created_items_count + ", updated_items_count: " + data.updated_items_count + ", deleted_items_count: " + data.deleted_items_count);
+								$("#job_status").html("created_items_count: " + data.created_items_count + ", updated_items_count: " + data.updated_items_count + ", deleted_items_count: " + data.deleted_items_count);
 								if (data.job_status === null || data.job_status === "in_progress") {
 									return checkGetItems(timeout + 20);
 								}

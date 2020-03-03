@@ -1,5 +1,7 @@
 {
 	"en": {
-		"job_not_started": "Job not started"
+		"job_not_started": "Job not started",
+		"in_progress": "In progress",
+		"ordering_items": "Ordering items"
 	}
 }

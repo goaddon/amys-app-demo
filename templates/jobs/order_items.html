@@ -1,4 +1,4 @@
-{% if account != nil %}
+{% if params.company_id != nil %}
 
 	{% assign variants_query = "variants" | db_find: company_id: account._id %}
 
@@ -18,59 +18,6 @@
 				{% assign variants_items = variants_items | push_to_hash: variant[0], array %}
 			{% endfor %}
 
-			{% for supplier in suppliers %}
-
-				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
-
-				<p>inventory_response: {{ inventory_response }}</p>
-
-				{% if inventory_response.code == 200 %}
-
-					{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id %}
-					{% assign items 			= items_query.results | to_hash: "sku" %}
-
-					{% for response_item in inventory_response.body %}
-
-						{% assign response_sku 		= response_item[0] | encrypt %}
-						{% assign response_name 	= response_item[1].name | encrypt %}
-						{% assign response_stock 	= response_item[1].stock %}
-						{% assign response_price 	= response_item[1].price %}
-						{% assign item 						= items[response_sku] %}
-
-						{% if item == nil %}
-
-							{% assign items_create 	= "create_item" | db_insert_one: company_id: account._id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
-
-						{% else %}
-
-								{% assign name_test 	= item.name == response_name %}
-								{% assign stock_test 	= item.stock == response_stock %}
-								{% assign price_test 	= item.price == response_price %}
-
-							 {% if name_test and stock_test and price_test %}
-							 {% else %}
-
-								{% assign items_update = "update_item" | db_update_one: company_id: account._id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
-
-							{% endif %}
-
-						{% endif %}
-					{% endfor %}
-
-					{% for item in items %}
-
-						{% assign sku = item[0] | decrypt %}
-
-						{% if inventory_response.body[sku] == nil %}
-
-							{% assign item_deletion = "soft_delete_item" | db_update_one: company_id: account._id, _id: item._id %}
-
-						{% endif %}
-
-					{% endfor %}
-				{% endif %}
-			{% endfor %}
-
 			{% assign skus = "" %}
 
 			{% for variant in variants %}
@@ -80,8 +27,6 @@
 			{% assign skus 									= skus | split: " " %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
-
-			<p>matchable_items: {{ matchable_items }}</p>
 
 			{% for matchable_item in matchable_items %}
 
@@ -112,8 +57,6 @@
 				{% endif %}
 			{% endfor %}
 
-			<p>variants_items: {{ variants_items }}</p>
-
 			{% assign array = "" | split: " " %}
 
 			{% for supplier in suppliers %}
@@ -132,8 +75,6 @@
 					{% assign ordered = variant.ordered | plus: 0 %}
 					{% assign missing = stock | plus: ordered %}
 					{% assign sorted_items = variant_items[1] | sort: "price" %}
-
-					<p>sorted_items: {{ sorted_items }}</p>
 
 					{% for item in sorted_items %}
 						{% if 0 > missing %}
@@ -156,7 +97,6 @@
 				{% endif %}
 			{% endfor %}
 
-			<p>suppliers_orders: {{ suppliers_orders }}</p>
 			{% for supplier in suppliers %}
 				{% assign supplier_id 		= supplier._id %}
 				{% assign supplier_order 	= suppliers_orders[supplier_id] %}
@@ -166,5 +106,44 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
-	{% include "purchases" %}
+
+	[
+
+		{% assign array_comma = false %}
+
+		{% for supplier in suppliers %}
+
+			{% if array_comma %}
+				,
+			{% else %}
+				{% assign array_comma = true %}
+			{% endif %}
+
+			{% assign supplier_id 		= supplier._id %}
+			{% assign supplier_order 	= suppliers_orders[supplier_id] %}
+
+			{% if supplier_order != nil and supplier_order.size > 0 %}
+				{"supplier_name": "{{ supplier.name }}"},
+				{"items":
+
+					{% assign hash_comma = false %}
+
+					{% for supplier_order_line in supplier_order %}
+
+						{% if hash_comma %}
+							,
+						{% else %}
+							{% assign hash_comma = true %}
+						{% endif %}
+
+						{
+							"sku": "{{ supplier_order_line.sku | decrypt }}",
+							"name": {{ supplier_order_line.name | decrypt }}",
+							"amount": {{ supplier_order_line.amount }}
+						}
+					{% endfor %}
+				}
+			{% endif %}
+		{% endfor %}
+	]
 {% endif %}

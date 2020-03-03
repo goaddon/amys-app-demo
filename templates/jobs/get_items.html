@@ -15,12 +15,6 @@
 			{% assign suppliers 				= suppliers_query.results %}
 			{% assign suppliers_orders 	= nil | new_hash %}
 			{% assign variants 					= variants_query.results | to_hash: "sku" %}
-			{% assign variants_items 		= nil | new_hash %}
-			{% assign array 						= "" | split: " " %}
-
-			{% for variant in variants %}
-				{% assign variants_items = variants_items | push_to_hash: variant[0], array %}
-			{% endfor %}
 
 			{% for supplier in suppliers %}
 
