@@ -55,7 +55,6 @@
 
 							 {% if item.name == response_name and item.stock == response_stock and item.price == response_price %}
 							 {% else %}
-							 	<p>UPDATE</p>
 								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
 
 								{% if items_update.updated_count == 1 %}
