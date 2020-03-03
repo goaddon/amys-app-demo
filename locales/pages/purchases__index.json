@@ -1,7 +1,10 @@
 {
 	"en": {
 		"job_not_started": "Job not started",
-		"in_progress": "In progress",
-		"ordering_items": "Ordering items"
+		"getting_items": "Getting items",
+		"got_items": "Got items",
+		"ordering_items": "Ordering items",
+		"did_not_order_items": "Did not order items",
+		"ordered_items": "Ordered items",
 	}
 }
