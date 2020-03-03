@@ -43,7 +43,6 @@
 						type: "post",
 						dataType: "json",
 						contentType: "application/json",
-						data: {},
 						url: "{{ 'item_orders__create' | path_for }}.json",
 						success: function(data, status, xhr) {
 							if (data === null) {
