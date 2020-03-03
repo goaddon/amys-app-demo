@@ -51,10 +51,10 @@
 
 								{% assign name_test 	= item.name == response_name %}
 								{% assign stock_test 	= item.stock == response_stock %}
+								<p>stock_test: {{ stock_test }} ({{ item.stock }} and {{ response_stock }})</p>
 								{% assign price_test 	= item.price == response_price %}
 
 							 {% if name_test and stock_test and price_test %}
-							 	<p>NOT UPDATE</p>
 							 {% else %}
 							 	<p>UPDATE</p>
 								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
