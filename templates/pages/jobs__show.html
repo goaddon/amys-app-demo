@@ -1,5 +1,4 @@
 {% if account != nil %}
 	{% assign job_status = params.id | job_status %}
-	{{ job_status }}
-	{"status": "200", "job_status": "{{ job_status.status }}", "data": "{{ job_status.data }}"}
+	{"status": "200", "job_status": "{{ job_status.status }}", "created_items_count": {{ job_status.data.created_items_count }}}
 {% endif %}
