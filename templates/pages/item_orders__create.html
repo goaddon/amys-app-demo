@@ -2,9 +2,9 @@
 
 	{% assign job = "order_items" | create_job: company_id: account._id %}
 
-	{% if job.error != nil %}
+	{% if job.error == nil %}
 		{"status": "200", "job_id": "{{ job.job_id }}"}
 	{% else %}
-		{"status": "500", "error": "Job not started"}
+		{"status": "500", "error": "{{ job.error }}"}
 	{% endif %}
 {% endif %}
