@@ -20,7 +20,7 @@
 							if (data === null) {
 								return console.log("data is null");
 							} else {
-								$("#items_job_status").html(data.job_status);
+								$("#items_job_status").html("created_items_count: {{ data.job_status.data.created_items_count }}, updated_items_count: {{ data.job_status.data.updated_items_count }}, deleted_items_count: {{ data.job_status.data.deleted_items_count }}");
 								if (data.job_status === null || data.job_status === "in_progress") {
 									return checkGetItems(timeout + 20);
 								}
