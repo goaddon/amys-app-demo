@@ -5,6 +5,7 @@
 		"got_items": "Got items",
 		"ordering_items": "Ordering items",
 		"did_not_order_items": "Did not order items",
-		"ordered_items": "Ordered items"
+		"ordered_items": "Ordered items",
+		"erred_ordering_items": "Erred while ordering items"
 	}
 }
