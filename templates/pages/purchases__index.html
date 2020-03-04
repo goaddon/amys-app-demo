@@ -10,78 +10,80 @@
 			var checkGetItems, checkOrderItems, getTimeout, orderItems;
 
 			getTimeout = function(timeout) {
-				return Math.min(60000, timeout);
+			  return Math.min(60000, timeout);
 			};
 
 			checkOrderItems = function(job_id, timeout) {
-				return setTimeout((function() {
-					timeout = getTimeout(timeout);
-					console.log("{{ 'jobs__show' | path_for: id: 'job_id' }}.json");
-					return $.ajax({
-						type: "get",
-						dataType: "json",
-						url: "{{ 'jobs__show' | path_for: id: 'job_id' }}.json",
-						success: function(data, status, xhr) {
-							if (data === null) {
-								return console.log("data is null");
-							} else {
-								if (data.job_status === null || data.job_status === "in_progress") {
-									$("#job_status").html("{{ l.ordering_items }}");
-									return checkOrderItems(job_id, timeout + 20);
-								} else if (data.job_status === "finished") {
-									return $("#job_status").html("{{ l.ordered_items }}");
-								}
-							}
-						}
-					});
-				}), timeout);
+			  return setTimeout((function() {
+			    var url_template;
+			    timeout = getTimeout(timeout);
+			    url_template = "{{ 'jobs__show' | path_for: id: 'job_id' }}.json";
+			    console.log(url_template.replace("job_id", job_id));
+			    return $.ajax({
+			      type: "get",
+			      dataType: "json",
+			      url: url_template.replace("job_id", job_id),
+			      success: function(data, status, xhr) {
+			        if (data === null) {
+			          return console.log("data is null");
+			        } else {
+			          if (data.job_status === null || data.job_status === "in_progress") {
+			            $("#job_status").html("{{ l.ordering_items }}");
+			            return checkOrderItems(job_id, timeout + 20);
+			          } else if (data.job_status === "finished") {
+			            return $("#job_status").html("{{ l.ordered_items }}");
+			          }
+			        }
+			      }
+			    });
+			  }), timeout);
 			};
 
 			orderItems = function(timeout) {
-				return setTimeout((function() {
-					timeout = getTimeout(timeout);
-					return $.ajax({
-						type: "post",
-						dataType: "json",
-						url: "{{ 'item_orders__create' | path_for }}.json",
-						success: function(data, status, xhr) {
-							if (data === null) {
-								return console.log("data is null");
-							} else {
-								if (data.error !== undefined) {
-									return $("#job_status").html("{{ l.did_not_order_items }}: " + data.error);
-								} else if (data.job_id !== undefined) {
-									$("#job_status").html("{{ l.ordering_items }}");
-									return checkOrderItems(data.job_id, 500);
-								}
-							}
-						}
-					});
-				}), timeout);
+			  return setTimeout((function() {
+			    timeout = getTimeout(timeout);
+			    return $.ajax({
+			      type: "post",
+			      dataType: "json",
+			      url: "{{ 'item_orders__create' | path_for }}.json",
+			      success: function(data, status, xhr) {
+			        if (data === null) {
+			          return console.log("data is null");
+			        } else {
+			          if (data.error !== undefined) {
+			            return $("#job_status").html("{{ l.did_not_order_items }}: " + data.error);
+			          } else if (data.job_id !== undefined) {
+			            $("#job_status").html("{{ l.ordering_items }}");
+			            return checkOrderItems(data.job_id, 500);
+			          }
+			        }
+			      }
+			    });
+			  }), timeout);
 			};
 
 			checkGetItems = function(timeout) {
-				return setTimeout((function() {
-					timeout = getTimeout(timeout);
-					return $.ajax({
-						type: "get",
-						dataType: "json",
-						url: "{{ 'jobs__show' | path_for: id: job.job_id }}.json",
-						success: function(data, status, xhr) {
-							if (data === null) {
-								return console.log("data is null");
-							} else {
-								if (data.job_status === null || data.job_status === "in_progress") {
-									$("#job_status").html("{{ l.getting_items }}");
-									return checkGetItems(timeout + 20);
-								} else if (data.job_status === "finished") {
-									$("#job_status").html("{{ l.got_items }}");
-									return orderItems(500);
-								}
-							}
-						}
-					});
-				}), timeout);
+			  return setTimeout((function() {
+			    timeout = getTimeout(timeout);
+			    return $.ajax({
+			      type: "get",
+			      dataType: "json",
+			      url: "{{ 'jobs__show' | path_for: id: job.job_id }}.json",
+			      success: function(data, status, xhr) {
+			        if (data === null) {
+			          return console.log("data is null");
+			        } else {
+			          if (data.job_status === null || data.job_status === "in_progress") {
+			            $("#job_status").html("{{ l.getting_items }}");
+			            return checkGetItems(timeout + 20);
+			          } else if (data.job_status === "finished") {
+			            $("#job_status").html("{{ l.got_items }}");
+			            return orderItems(500);
+			          }
+			        }
+			      }
+			    });
+			  }), timeout);
 			};
 
 			checkGetItems(500);
