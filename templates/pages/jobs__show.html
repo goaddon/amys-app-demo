@@ -1,9 +1,11 @@
 {% if account != nil %}
 	{% assign job_status = params.id | job_status %}
 	{"status": "200", "job_status": "{{ job_status.status }}"
-	{% if job_status.name == "get_items" %}
-		, "created_items_count": {{ job_status.data.created_items_count }}, "updated_items_count": {{ job_status.data.updated_items_count }}, "deleted_items_count": {{ job_status.data.deleted_items_count }}
-	{% else if job_status.name == "order_items" %}
+	{% if job_status.status == "finished" %}
+		{% if job_status.name == "get_items" %}
+			, "created_items_count": {{ job_status.data.created_items_count }}, "updated_items_count": {{ job_status.data.updated_items_count }}, "deleted_items_count": {{ job_status.data.deleted_items_count }}
+		{% else if job_status.name == "order_items" %}
+		{% endif %}
 	{% endif %}
 	}
 {% endif %}
