@@ -16,10 +16,11 @@
 			checkOrderItems = function(job_id, timeout) {
 				return setTimeout((function() {
 					timeout = getTimeout(timeout);
+					console.log("{{ 'jobs__show' | path_for: id: 'job_id' }}.json");
 					return $.ajax({
 						type: "get",
 						dataType: "json",
-						url: "{{ 'jobs__show' | path_for: id: job_id }}.json",
+						url: "{{ 'jobs__show' | path_for: id: 'job_id' }}.json",
 						success: function(data, status, xhr) {
 							if (data === null) {
 								return console.log("data is null");
