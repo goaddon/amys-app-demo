@@ -6,7 +6,7 @@
 			, "created_items_count": {{ job_status.data.created_items_count }}, "updated_items_count": {{ job_status.data.updated_items_count }}, "deleted_items_count": {{ job_status.data.deleted_items_count }}
 		{% else if job_status.name == "order_items" %}
 			{% if job_status.status == "erred" %}
-				, "error": {{ job_status.data.error }}
+				, "error": {{ job_status.data }}
 			{% endif %}
 		{% endif %}
 	{% endif %}
