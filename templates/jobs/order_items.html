@@ -70,7 +70,6 @@
 				{% if variant_items[1].size > 0 %}
 
 					{% assign sku 		= variant_items[0] %}
-					<p></p>
 					{% assign variant = variants[sku] %}
 					{% assign stock 	= variant.stock | plus: 0 %}
 					{% assign ordered = variant.ordered | plus: 0 %}
