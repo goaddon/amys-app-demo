@@ -1,13 +1,13 @@
 {% if account != nil %}
-	{% assign job_status = params.id | job_status %}
-	{"status": "200", "job_status": "{{ job_status.status }}", "name": "{{ job_status.name }}"
-	{% if job_status.status == "finished" %}
-		{% if job_status.name == "get_items" %}
-			, "created_items_count": {{ job_status.data.created_items_count }}, "updated_items_count": {{ job_status.data.updated_items_count }}, "deleted_items_count": {{ job_status.data.deleted_items_count }}
+	{% assign job = params.id | get_job %}
+	{"status": "200", "job_status": "{{ job.status }}", "name": "{{ job.name }}"
+	{% if job.status == "finished" %}
+		{% if job.name == "get_items" %}
+			, "created_items_count": {{ job.data.created_items_count }}, "updated_items_count": {{ job.data.updated_items_count }}, "deleted_items_count": {{ job.data.deleted_items_count }}
 		{% endif %}
-	{% else if job_status.status == "erred" %}
-		{% if job_status.name == "order_items" %}
-			, "error": "{{ job_status.data.error }}"
+	{% else if job.status == "erred" %}
+		{% if job.name == "order_items" %}
+			, "error": "{{ job.data.error }}"
 		{% endif %}
 	{% endif %}
 	}
