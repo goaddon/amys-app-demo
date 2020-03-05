@@ -2,20 +2,20 @@
 	<tbody>
 		{% for supplier in job.data %}
 			<tr>
-				<td class="text-center" colspan="3">
+				<th class="text-center" colspan="3">
 					<b>{{ supplier.supplier_name }}</b>
-				</td>
+				</th>
 			</tr>
 			<tr>
-				<th>
+				<td>
 					<b>{{ l.sku }}</b>
-				</th>
-				<th>
+				</td>
+				<td>
 					<b>{{ l.name }}</b>
-				</th>
-				<th>
+				</td>
+				<td>
 					<b>{{ l.amount }}</b>
-				</th>
+				</td>
 			</tr>
 			{% for item in supplier.items %}
 				<tr>
