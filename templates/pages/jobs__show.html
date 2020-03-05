@@ -3,11 +3,11 @@
 	{"status": "200", "job_status": "{{ job.status }}", "name": "{{ job.name }}"
 	{% if job.status == "finished" %}
 		{% if job.name == "get_items" %}
-			, "created_items_count": "{{ job.created_items_count }}", "updated_items_count": "{{ job.updated_items_count }}", "deleted_items_count": "{{ job.deleted_items_count }}"
+			, "created_items_count": "{{ job.data.created_items_count }}", "updated_items_count": "{{ job.data.updated_items_count }}", "deleted_items_count": "{{ job.data.deleted_items_count }}"
 		{% endif %}
 	{% else if job.status == "erred" %}
 		{% if job.name == "order_items" %}
-			, "error": "{{ job.error_message }}"
+			, "error": "{{ job.data.error_message }}"
 		{% endif %}
 	{% endif %}
 	}
