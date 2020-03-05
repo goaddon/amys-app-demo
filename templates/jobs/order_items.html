@@ -113,16 +113,17 @@
 
 		{% for supplier in suppliers %}
 
-			{% if array_comma %}
-				,
-			{% else %}
-				{% assign array_comma = true %}
-			{% endif %}
-
 			{% assign supplier_id 		= supplier._id %}
 			{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 
 			{% if supplier_order != nil and supplier_order.size > 0 %}
+
+				{% if array_comma %}
+					,
+				{% else %}
+					{% assign array_comma = true %}
+				{% endif %}
+
 				{"supplier_name": "{{ supplier.name }}"},
 				{"items":
 
