@@ -1,3 +1,4 @@
+<p></p>
 {% if params.company_id != nil %}
 
 	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
@@ -69,13 +70,13 @@
 
 				{% if variant_items[1].size > 0 %}
 
-					{% assign sku 		= variant_items[0] %}
-					{% assign variant = variants[sku] %}
-					{% assign stock 	= variant.stock | plus: 0 %}
-					{% assign ordered = variant.ordered | plus: 0 %}
-					{% assign missing = stock | plus: ordered %}
-					{% assign sorted_items = variant_items[1] | sort: "price" %}
-					{"sorted_items": "{{ sorted_items }}"}
+					{% assign sku 					= variant_items[0] %}
+					{% assign variant 			= variants[sku] %}
+					{% assign stock 				= variant.stock | plus: 0 %}
+					{% assign ordered 			= variant.ordered | plus: 0 %}
+					{% assign missing 			= stock | plus: ordered %}
+					{% assign sorted_items 	= variant_items[1] | sort: "price" %}
+
 					{% for item in sorted_items %}
 						{% if 0 > missing %}
 
