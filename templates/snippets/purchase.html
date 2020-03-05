@@ -1,0 +1,29 @@
+<table>
+	<tbody>
+		{% for supplier in job.data %}
+			<tr>
+				<td colspan="3">
+					<h6>{{ supplier.supplier_name }}</h6>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<b>{{ l.sku }}</b>
+				</th>
+				<th>
+					<b>{{ l.name }}</b>
+				</th>
+				<th>
+					<b>{{ l.amount }}</b>
+				</th>
+			</tr>
+			{% for item in supplier.items %}
+				<tr>
+					<td>{{ item.sku }}</td>
+					<td>{{ item.name }}</td>
+					<td>{{ item.amount }}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+	</tbody>
+</table>

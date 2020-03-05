@@ -1,0 +1,10 @@
+{% if account != nil %}
+
+	{% assign job = params.id | get_job %}
+
+	{% if job == nil %}
+		<p>{{ l.purchase_not_found }}</p>
+	{% else %}
+		{% include "purchase" %}
+	{% endif %}
+{% endif %}
