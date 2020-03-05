@@ -5,7 +5,7 @@
 		{% if job.name == "get_items" %}
 			, "created_items_count": "{{ job.data.created_items_count }}", "updated_items_count": "{{ job.data.updated_items_count }}", "deleted_items_count": "{{ job.data.deleted_items_count }}"
 		{% else if job.name == "order_items" %}
-			, "data": "{{ job.data | to_json }}"
+			, "data": {{ job.data | to_json }}
 		{% endif %}
 	{% else if job.status == "erred" %}
 		{% if job.name == "order_items" %}
