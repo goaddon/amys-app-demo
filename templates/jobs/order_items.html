@@ -78,7 +78,7 @@
 					{% assign missing = stock | plus: ordered %}
 					<p>missing</p>
 					{% assign sorted_items = variant_items[1] | sort: "price" %}
-					<p>sorted_items: {{ sorted_items }}</p>
+					<p>sorted_items</p>
 					{% for item in sorted_items %}
 						{% if 0 > missing %}
 
