@@ -7,7 +7,7 @@
 		{% endif %}
 	{% else if job.status == "erred" %}
 		{% if job.name == "order_items" %}
-			, "error": "{{ job.error_message }}"
+			, "error_message": "{{ job.error_message }}"
 		{% endif %}
 	{% endif %}
 	}
