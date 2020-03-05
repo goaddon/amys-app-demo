@@ -106,7 +106,7 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
-
+	<p>supplier_orders: {{ supplier_orders }}</p>
 	[
 
 		{% assign array_comma = false %}
@@ -115,7 +115,7 @@
 
 			{% assign supplier_id 		= supplier._id %}
 			{% assign supplier_order 	= suppliers_orders[supplier_id] %}
-			<p>supplier_order: {{ supplier_order }}</p>
+
 			{% if supplier_order != nil and supplier_order.size > 0 %}
 
 				{% if array_comma %}
