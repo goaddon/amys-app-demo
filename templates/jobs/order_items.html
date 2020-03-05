@@ -70,10 +70,13 @@
 				{% if variant_items[1].size > 0 %}
 
 					{% assign sku 		= variant_items[0] %}
+					<p>sku</p>
 					{% assign variant = variants[sku] %}
+					<p>variant</p>
 					{% assign stock 	= variant.stock | plus: 0 %}
 					{% assign ordered = variant.ordered | plus: 0 %}
 					{% assign missing = stock | plus: ordered %}
+					<p>missing</p>
 					{% assign sorted_items = variant_items[1] | sort: "price" %}
 					<p>sorted_items: {{ sorted_items }}</p>
 					{% for item in sorted_items %}
