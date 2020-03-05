@@ -18,7 +18,7 @@
 					var job_url, purchase_url;
 					timeout = getTimeout(timeout);
 					job_url = "{{ 'jobs__show' | path_for: id: 'job_id' }}.json";
-					purchase_url = "{{ 'purchases__show' | path_for: id: 'purchase_id' }}.json";
+					purchase_url = "{{ 'purchases__show' | path_for: id: 'purchase_id' }}";
 					return $.ajax({
 						type: "get",
 						dataType: "json",
