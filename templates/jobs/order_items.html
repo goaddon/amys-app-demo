@@ -139,7 +139,7 @@
 
 						{
 							"sku": "{{ supplier_order_line.sku | decrypt }}",
-							"name": {{ supplier_order_line.name | decrypt }}",
+							"name": "{{ supplier_order_line.name | decrypt }}",
 							"amount": {{ supplier_order_line.amount }}
 						}
 					{% endfor %}
