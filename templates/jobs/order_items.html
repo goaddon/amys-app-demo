@@ -1,10 +1,10 @@
 {% if params.company_id != nil %}
 
-	{% assign variants_query = "variants" | db_find: company_id: account._id %}
+	{% assign variants_query = "variants" | db_find: company_id: params.company_id %}
 
 	{% if variants_query.results_count > 0 %}
 
-		{% assign suppliers_query = "suppliers" | db_find: company_id: account._id %}
+		{% assign suppliers_query = "suppliers" | db_find: company_id: params.company_id %}
 
 		{% if suppliers_query.results_count > 0 %}
 
@@ -25,7 +25,7 @@
 			{% endfor %}
 
 			{% assign skus 									= skus | split: " " %}
-			{% assign matchable_items_query = "matchable_items" | db_find: company_id: account._id, skus: skus %}
+			{% assign matchable_items_query = "matchable_items" | db_find: company_id: params.company_id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
 
 			{% for matchable_item in matchable_items %}
@@ -90,7 +90,7 @@
 								{% assign suppliers_orders 	= suppliers_orders | push_to_hash: item.supplier_id, supplier_orders %}
 								{% assign item_ordered 			= item.ordered | plus: 0 %}
 								{% assign is_ordered 				= item_ordered | plus: orderable %}
-								{% assign items_update 			= "order_item" | db_update_one: company_id: account._id, _id: item._id, ordered: is_ordered %}
+								{% assign items_update 			= "order_item" | db_update_one: company_id: params.company_id, _id: item._id, ordered: is_ordered %}
 							{% endif %}
 						{% endif %}
 					{% endfor %}
@@ -106,7 +106,7 @@
 			{% endfor %}
 		{% endif %}
 	{% endif %}
-	<p>1</p>
+
 	[
 
 		{% assign array_comma = false %}
