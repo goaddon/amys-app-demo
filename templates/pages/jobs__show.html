@@ -2,15 +2,9 @@
 	{% assign job = params.id | get_job %}
 	{"status": "200", "job_status": "{{ job.status }}", "name": "{{ job.name }}"
 	{% if job.status == "finished" %}
-		{% if job.name == "get_items" %}
-			, "created_items_count": "{{ job.data.created_items_count }}", "updated_items_count": "{{ job.data.updated_items_count }}", "deleted_items_count": "{{ job.data.deleted_items_count }}"
-		{% else if job.name == "order_items" %}
-			, "data": {{ job.data | to_json }}
-		{% endif %}
+		, "data": {{ job.data | obj_to_json }}
 	{% else if job.status == "erred" %}
-		{% if job.name == "order_items" %}
-			, "error_message": "{{ job.error_message }}"
-		{% endif %}
+		, "error_message": "{{ job.error_message }}"
 	{% endif %}
 	}
 {% endif %}
