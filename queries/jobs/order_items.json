@@ -1,0 +1,40 @@
+{
+	"variants": {
+		"klass": "variants",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"stock": {
+				"$lt": 0
+			}
+		},
+		"projection": {
+			"_id": 1,
+			"sku": 1,
+			"stock": 1
+		}
+	},
+	"suppliers": {
+		"klass": "suppliers",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"url": {"$ne": null},
+			"mail_address": {"$ne": null}
+		},
+		"projection": {
+			"_id": 1,
+			"name": 1,
+			"url": 1,
+			"mail_address": 1
+		}
+	},
+	"order_item": {
+		"klass": "items",
+		"query": {
+			"company_id": "{{ company_id }}",
+			"_id": "{{ _id }}"
+		},
+		"document": {
+			"ordered": "{{ ordered }}"
+		}
+	}
+}

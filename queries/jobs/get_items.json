@@ -73,31 +73,5 @@
 		"document": {
 			"stock": null
 		}
-  },
-	"matchable_items": {
-		"klass": "items",
-		"query": {
-			"company_id": "{{ company_id }}",
-			"sku": {"$in": "{{ skus }}"}
-		},
-		"projection": {
-			"_id": 1,
-			"sku": 1,
-			"name": 1,
-			"price": 1,
-			"stock": 1,
-			"ordered": 1,
-			"supplier_id": 1
-		}
-	},
-	"order_item": {
-		"klass": "items",
-		"query": {
-			"company_id": "{{ company_id }}",
-			"_id": "{{ _id }}"
-		},
-		"document": {
-			"ordered": "{{ ordered }}"
-		}
-	}
+  }
 }
