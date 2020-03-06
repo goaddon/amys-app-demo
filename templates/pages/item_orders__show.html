@@ -3,8 +3,8 @@
 	{% assign job = params.id | get_job %}
 
 	{% if job == nil %}
-		<p>{{ l.purchase_not_found }}</p>
+		<p>{{ l.not_found }}</p>
 	{% else %}
-		{% include "purchase" %}
+		{% include "item_order" %}
 	{% endif %}
 {% endif %}

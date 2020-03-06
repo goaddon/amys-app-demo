@@ -1,6 +1,6 @@
 {% if account != nil %}
 
-	{% assign job = "get_items" | create_job: company_id: account._id %}
+	{% assign job = "create_items" | create_job: company_id: account._id %}
 
 	{% if job.error != nil %}
 		<p>{{ l.job_not_started }}: {{ job.error }}</p>
@@ -17,12 +17,12 @@
 				return setTimeout((function() {
 					var job_url, purchase_url;
 					timeout = getTimeout(timeout);
-					job_url = "{{ 'jobs__show' | path_for: id: 'job_id' }}.json";
-					purchase_url = "{{ 'purchases__show' | path_for: id: 'purchase_id' }}";
+					job_url = "{{ 'jobs__show' | path_for: id: 'id_placeholder' }}.json";
+					purchase_url = "{{ 'item_orders__show' | path_for: id: 'id_placeholder' }}";
 					return $.ajax({
 						type: "get",
 						dataType: "json",
-						url: job_url.replace("job_id", job_id),
+						url: job_url.replace("id_placeholder", job_id),
 						success: function(data, status, xhr) {
 							if (data !== null) {
 								if (data.job_status === null || data.job_status === "in_progress") {
@@ -31,7 +31,7 @@
 								} else if (data.job_status === "erred") {
 									return $("#job_status").html("{{ l.erred_ordering_items }}: " + data.error_message);
 								} else if (data.job_status === "finished") {
-									return location.href = purchase_url.replace("purchase_id", job_id);
+									return location.href = purchase_url.replace("id_placeholder", job_id);
 								}
 							}
 						}

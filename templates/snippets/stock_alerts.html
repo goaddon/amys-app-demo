@@ -10,7 +10,9 @@
 			&nbsp;{{ l.out_of_stock }}
 		</p>
   </h2>
-  <a href="{{ 'purchases__index' | path_for }}">
-  	<button type="button" class="btn btn-primary btn-lg ml-2">{{ l.compare }}</button>
-  </a>
+
+	<form action="{{ 'items__create' | path_for }}" method="post">
+		<input type="submit" value="{{ l.compare }}" class="btn btn-primary btn-lg ml-2">
+	</form>
+
 </div>
