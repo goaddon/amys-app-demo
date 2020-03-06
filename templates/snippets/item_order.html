@@ -1,29 +1,37 @@
-<table class="table">
-	<tbody>
-		{% for supplier in job.data %}
-			<tr class="bg-light">
-				<th colspan="3">
-					<b>{{ supplier.supplier_name }}</b>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					<b>{{ l.sku }}</b>
-				</td>
-				<td>
-					<b>{{ l.name }}</b>
-				</td>
-				<td>
-					<b>{{ l.amount }}</b>
-				</td>
-			</tr>
-			{% for item in supplier.items %}
-				<tr>
-					<td>{{ item.sku }}</td>
-					<td>{{ item.name }}</td>
-					<td>{{ item.amount }}</td>
-				</tr>
-			{% endfor %}
-		{% endfor %}
-	</tbody>
-</table>
+{% if job == nil %}
+	<p>{{ l.not_found }}</p>
+{% else %}
+	{% if job.data.size == 0 %}
+		<p>{{ l.no_items_ordered }}</p>
+	{% else %}
+		<table class="table">
+			<tbody>
+				{% for supplier in job.data %}
+					<tr class="bg-light">
+						<th colspan="3">
+							<b>{{ supplier.supplier_name }}</b>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<b>{{ l.sku }}</b>
+						</td>
+						<td>
+							<b>{{ l.name }}</b>
+						</td>
+						<td>
+							<b>{{ l.amount }}</b>
+						</td>
+					</tr>
+					{% for item in supplier.items %}
+						<tr>
+							<td>{{ item.sku }}</td>
+							<td>{{ item.name }}</td>
+							<td>{{ item.amount }}</td>
+						</tr>
+					{% endfor %}
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endif %}

@@ -1,5 +1,6 @@
 {
 	"en": {
+		"no_items_ordered": "No items ordered",
 		"sku": "SKU",
 		"name": "Name",
 		"amount": "Amount"
