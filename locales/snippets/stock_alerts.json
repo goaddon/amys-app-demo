@@ -3,6 +3,15 @@
 		"product": "product",
 		"products": "products",
 		"out_of_stock": "out of stock",
-		"compare": "Compare suppliers and purchase"
+		"compare": "Compare suppliers and purchase",
+		"comparing": "Please wait...",
+		"items_not_created": "Unable to compare suppliers",
+		"creating_items": "Started getting items",
+		"getting_items": "Getting items",
+		"got_items": "Got items",
+		"ordering_items": "Ordering items",
+		"did_not_order_items": "Did not order items",
+		"ordered_items": "Ordered items",
+		"erred_ordering_items": "Erred while ordering items"
 	}
 }
