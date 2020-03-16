@@ -1,0 +1,6 @@
+<h5 class="mb-3">{{ l.headline }} {{ supplier.name }}</h5>
+<form data-id="bump_item" action="{{ 'suppliers__bump_item' | path_for: id: supplier._id, format: 'js' }}" method="patch" data-remote="true">
+	<div class="input-group">
+		<input class="form-control" type="text" name="ean" placeholder="{{ l.placeholders.ean }}" autofocus>
+	</div>
+</form>

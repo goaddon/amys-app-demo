@@ -49,6 +49,7 @@
 			"name": "{{ name }}",
 			"stock": "{{ stock }}",
 			"price": "{{ price }}",
+			"ordered": 0,
 			"supplier_id": "{{ supplier_id }}"
 		}
 	},

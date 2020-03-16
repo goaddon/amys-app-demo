@@ -1,0 +1,9 @@
+{
+	"en": {
+		"not_found": "The supplier was not found",
+		"headline": "Receive items from",
+		"placeholders": {
+			"ean": "Scan EAN code"
+		}
+	}
+}

@@ -1,0 +1,39 @@
+{% if account != nil %}
+
+	{% assign suppliers_query 	= "suppliers" | db_find: company_id: account._id, _id: params.id %}
+	{% assign supplier 					= suppliers_query.results.first %}
+
+	{% if supplier != nil %}
+		{% assign ean 				= params.ean | encrypt %}
+		{% assign items_query = "items" | db_find: company_id: account._id, supplier_id: supplier._id, ean: ean %}
+		{% assign item 				= items_query.results.first %}
+
+		{% if item == nil %}
+			alertify.error("{{ l.no_item }}");
+		{% else if 0 > item.ordered %}
+			alertify.error("{{ l.item_not_ordered }}");
+		{% else %}
+			{% assign variants_query 	= "variants" | db_find: company_id: account._id, ean: ean %}
+			{% assign variant 				= variants_query.results.first %}
+
+			{% if variant == nil %}
+				alertify.error("{{ l.no_variant }}");
+			{% else %}
+				{% assign ordered 				= item.ordered | minus: 1 %}
+				{% assign items_update 		= "update_item" | db_update_one: company_id: account._id, _id: item._id, ordered: ordered %}
+
+				{% if items_update.matched_count != 1 %}
+					alertify.error("{{ l.item_not_updated }}");
+				{% else %}
+					{% assign stock 					= variant.stock | plus: 1 %}
+					{% assign variants_update = "update_variant" | db_update_one: company_id: account._id, _id: variant._id, stock: stock %}
+					{% if variants_update.matched_count != 1 %}
+						alertify.error("{{ l.variant_not_updated }}");
+					{% else %}
+						alertify.success("{{ l.success }}");
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	{% endif %}
+{% endif %}

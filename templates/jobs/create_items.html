@@ -29,13 +29,14 @@
 
 						{% assign response_sku 		= response_item[0] | encrypt %}
 						{% assign response_name 	= response_item[1].name | encrypt %}
+						{% assign response_ean 		= response_item[1].ean | encrypt %}
 						{% assign response_stock 	= response_item[1].stock %}
 						{% assign response_price 	= response_item[1].price %}
 						{% assign item 						= items[response_sku] %}
 
 						{% if item == nil %}
 
-							{% assign items_create 	= "create_item" | db_insert_one: company_id: params.company_id, sku: response_sku, name: response_name, stock: response_stock, price: response_price, supplier_id: supplier._id %}
+							{% assign items_create 	= "create_item" | db_insert_one: company_id: params.company_id, sku: response_sku, name: response_name, ean: response_ean, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 
 							{% if items_create.destroyed_count == 1 %}
 								{% assign created_items_count = created_items_count | plus: 1 %}
@@ -43,13 +44,9 @@
 
 						{% else %}
 
-								{% assign name_test 	= item.name == response_name %}
-								{% assign stock_test 	= item.stock == response_stock %}
-								{% assign price_test 	= item.price == response_price %}
-
-							 {% if item.name == response_name and item.stock == response_stock and item.price == response_price %}
+							 {% if item.name == response_name and item.ean == response_ean and item.stock == response_stock and item.price == response_price %}
 							 {% else %}
-								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, stock: response_stock, price: response_price %}
+								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, ean: response_ean, stock: response_stock, price: response_price %}
 
 								{% if items_update.updated_count == 1 %}
 									{% assign updated_items_count = updated_items_count | plus: 1 %}
