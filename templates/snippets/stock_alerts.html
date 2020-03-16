@@ -101,9 +101,6 @@
 
 		createItems = function() {
 			$(".compare-suppliers").hide();
-			$(".comparing-suppliers").fadeTo(0, 1.0, function() {
-				return $(".comparing-suppliers").fadeTo("slow", 0.0);
-			});
 			return $.ajax({
 				type: "post",
 				dataType: "json",
