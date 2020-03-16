@@ -1,14 +1,20 @@
 <div class="text-center mt-5">
-	<div class="jumbotron">
-		<h1 class="display-1">{{ variants_count }}</h1>
-		<h1 class="display-4">
-			{% if variants_count == 1 %}
-				{{ l.product }}
-			{% else %}
-				{{ l.products }}
-			{% endif %}
-			&nbsp;{{ l.out_of_stock }}
-		</h1>
+	<div class="row">
+		<div class="col-sm-3 col-md-2 col-lg-4">
+		</div>
+		<div class="col-sm-6 col-md-8 col-lg-4 bg-light p-4">
+			<h1 class="display-1">{{ variants_count }}</h1>
+			<h1 class="display-4">
+				{% if variants_count == 1 %}
+					{{ l.product }}
+				{% else %}
+					{{ l.products }}
+				{% endif %}
+				&nbsp;{{ l.out_of_stock }}
+			</h1>
+		</div>
+		<div class="col-sm-3 col-md-2 col-lg-4">
+		</div>
 	</div>
 	<button type="button" class="btn btn-primary btn-lg ml-2 compare-suppliers">{{ l.compare }}</button>
 	<button type="button" class="btn btn-primary btn-lg ml-2 comparing-suppliers disabled" style="display:none; cursor: default;">{{ l.comparing }}</button>
