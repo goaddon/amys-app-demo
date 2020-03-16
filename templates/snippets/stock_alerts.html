@@ -101,13 +101,16 @@
 
 		createItems = function() {
 			$(".compare-suppliers").hide();
-			$(".comparing-suppliers").show().fadeTo(0);
+			$(".comparing-suppliers").fadeTo(0, 1.0, function() {
+				return $(".comparing-suppliers").fadeTo("slow", 0.0);
+			});
 			return $.ajax({
 				type: "post",
 				dataType: "json",
 				url: "{{ 'items__create' | path_for }}.json",
 				success: function(data, status, xhr) {
 					if (data !== null) {
+						$("#variants_count").remove();
 						if (data.error_message !== undefined) {
 							return $("#job_status").html("{{ l.items_not_created }}: " + data.error_message);
 						} else if (data.job_id !== undefined) {
