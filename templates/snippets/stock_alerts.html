@@ -3,15 +3,18 @@
 		<div class="col-sm-0 col-md-1 col-lg-2 col-xl-3">
 		</div>
 		<div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 bg-light p-4">
-			<h1 class="display-3" id="variants_count">{{ variants_count }}</h1>
-			<h1 class="display-4" id="job_status">
-				{% if variants_count == 1 %}
-					{{ l.product }}
-				{% else %}
-					{{ l.products }}
-				{% endif %}
-				&nbsp;{{ l.out_of_stock }}
-			</h1>
+			<div class="stock-alert-container">
+				<h1 class="display-3">{{ variants_count }}</h1>
+				<h1 class="display-4">
+					{% if variants_count == 1 %}
+						{{ l.product }}
+					{% else %}
+						{{ l.products }}
+					{% endif %}
+					&nbsp;{{ l.out_of_stock }}
+				</h1>
+			</div>
+			<h1 class="display-4 job-status"></h1>
 		</div>
 		<div class="col-sm-0 col-md-1 col-lg-2	col-xl-3">
 		</div>
@@ -42,10 +45,10 @@
 					success: function(data, status, xhr) {
 						if (data !== null) {
 							if (data.job_status === null || data.job_status === "in_progress") {
-								$("#job_status").html("{{ l.ordering_items }}");
+								$(".job-status").html("{{ l.ordering_items }}");
 								return checkOrderItems(job_id, timeout + 20);
 							} else if (data.job_status === "erred") {
-								return $("#job_status").html("{{ l.erred_ordering_items }}: " + data.error_message);
+								return $(".job-status").html("{{ l.erred_ordering_items }}: " + data.error_message);
 							} else if (data.job_status === "finished") {
 								return location.href = itemOrderUrl().replace("id_placeholder", job_id);
 							}
@@ -65,9 +68,9 @@
 					success: function(data, status, xhr) {
 						if (data !== null) {
 							if (data.error_message !== undefined) {
-								return $("#job_status").html("{{ l.did_not_order_items }}: " + data.error_message);
+								return $(".job-status").html("{{ l.did_not_order_items }}: " + data.error_message);
 							} else if (data.job_id !== undefined) {
-								$("#job_status").html("{{ l.ordering_items }}");
+								$(".job-status").html("{{ l.ordering_items }}");
 								return checkOrderItems(data.job_id, 500);
 							}
 						}
@@ -86,10 +89,10 @@
 					success: function(data, status, xhr) {
 						if (data !== null) {
 							if (data.job_status === null || data.job_status === "in_progress") {
-								$("#job_status").html("{{ l.getting_items }}");
+								$(".job-status").html("{{ l.getting_items }}");
 								return checkCreateItems(job_id, timeout + 20);
 							} else if (data.job_status === "finished") {
-								$("#job_status").html("{{ l.got_items }}");
+								$(".job-status").html("{{ l.got_items }}");
 								return orderItems(500);
 							}
 						}
@@ -106,11 +109,11 @@
 				url: "{{ 'items__create' | path_for }}.json",
 				success: function(data, status, xhr) {
 					if (data !== null) {
-						$("#variants_count").remove();
+						$(".stock-alert-container").remove();
 						if (data.error_message !== undefined) {
-							return $("#job_status").html("{{ l.items_not_created }}: " + data.error_message);
+							return $(".job-status").html("{{ l.items_not_created }}: " + data.error_message);
 						} else if (data.job_id !== undefined) {
-							$("#job_status").html("{{ l.creating_items }}");
+							$(".job-status").html("{{ l.creating_items }}");
 							return checkCreateItems(data.job_id, 500);
 						}
 					}
