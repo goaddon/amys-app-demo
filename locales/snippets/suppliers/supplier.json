@@ -3,7 +3,8 @@
 		"created": "created",
 		"ago": "ago",
 		"buttons": {
-			"destroy": "Destroy"
+			"destroy": "Destroy",
+			"restock": "Receive items"
 		}
 	}
 }
