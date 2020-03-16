@@ -1,10 +1,10 @@
 <div class="text-center mt-5">
-	<div class="row">
-		<div class="col-sm-3 col-md-2 col-lg-4">
+	<div class="row mb-4">
+		<div class="col-sm-0 col-md-1 col-lg-2 col-xl-3">
 		</div>
-		<div class="col-sm-6 col-md-8 col-lg-4 bg-light p-4">
-			<h1 class="display-1">{{ variants_count }}</h1>
-			<h1 class="display-4">
+		<div class="col-sm-12 col-md-10 col-lg-8 col-xl-6 bg-light p-4">
+			<h1 class="display-3" id="variants_count">{{ variants_count }}</h1>
+			<h1 class="display-4" id="job_status">
 				{% if variants_count == 1 %}
 					{{ l.product }}
 				{% else %}
@@ -13,12 +13,11 @@
 				&nbsp;{{ l.out_of_stock }}
 			</h1>
 		</div>
-		<div class="col-sm-3 col-md-2 col-lg-4">
+		<div class="col-sm-0 col-md-1 col-lg-2	col-xl-3">
 		</div>
 	</div>
-	<button type="button" class="btn btn-primary btn-lg ml-2 compare-suppliers">{{ l.compare }}</button>
-	<button type="button" class="btn btn-primary btn-lg ml-2 comparing-suppliers disabled" style="display:none; cursor: default;">{{ l.comparing }}</button>
-	<div id="job_status"></div>
+	<button type="button" class="btn btn-outline-primary btn-lg ml-2 compare-suppliers">{{ l.compare }}</button>
+	<button type="button" class="btn btn-outline-primary btn-lg ml-2 comparing-suppliers disabled" style="display:none; cursor: default;">{{ l.comparing }}</button>
 	<script>
 		var checkCreateItems, checkOrderItems, createItems, getTimeout, itemOrderUrl, jobUrl, orderItems;
 
@@ -102,7 +101,7 @@
 
 		createItems = function() {
 			$(".compare-suppliers").hide();
-			$(".comparing-suppliers").show();
+			$(".comparing-suppliers").show().fadeTo(0);
 			return $.ajax({
 				type: "post",
 				dataType: "json",
