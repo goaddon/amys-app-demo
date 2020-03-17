@@ -47,6 +47,7 @@
 			"company_id": "{{ company_id }}",
 			"sku": "{{ sku }}",
 			"name": "{{ name }}",
+			"ean": "{{ ean }}",
 			"stock": "{{ stock }}",
 			"price": "{{ price }}",
 			"ordered": 0,
@@ -61,6 +62,7 @@
 		},
 		"document": {
 			"name": "{{ name }}",
+			"ean": "{{ ean }}",
 			"stock": "{{ stock }}",
 			"price": "{{ price }}"
 		}
