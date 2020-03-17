@@ -31,10 +31,10 @@
 						alertify.error("{{ l.variant_not_updated }}");
 					{% else %}
 						alertify.success("{{ l.success }}");
-						$('input[name="ean"]').val("");
 					{% endif %}
 				{% endif %}
 			{% endif %}
 		{% endif %}
 	{% endif %}
+	$('input[name="ean"]').val("");
 {% endif %}
