@@ -10,7 +10,7 @@
 
 		{% if item == nil %}
 			alertify.error("{{ l.no_item }}");
-		{% else if 0 > item.ordered %}
+		{% elsif 0 > item.ordered %}
 			alertify.error("{{ l.item_not_ordered }}");
 		{% else %}
 			{% assign variants_query 	= "variants" | db_find: company_id: account._id, ean: ean %}
