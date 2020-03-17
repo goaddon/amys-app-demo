@@ -38,14 +38,14 @@
 
 							{% assign items_create 	= "create_item" | db_insert_one: company_id: params.company_id, sku: response_sku, name: response_name, ean: response_ean, stock: response_stock, price: response_price, supplier_id: supplier._id %}
 
-							{% if items_create.destroyed_count == 1 %}
+							{% if items_create.created_count == 1 %}
 								{% assign created_items_count = created_items_count | plus: 1 %}
 							{% endif %}
 
 						{% else %}
 
-							 {% if item.name == response_name and item.ean == response_ean and item.stock == response_stock and item.price == response_price %}
-							 {% else %}
+							{% if item.name == response_name and item.ean == response_ean and item.stock == response_stock and item.price == response_price %}
+							{% else %}
 								{% assign items_update = "update_item" | db_update_one: company_id: params.company_id, _id: item._id, name: response_name, ean: response_ean, stock: response_stock, price: response_price %}
 
 								{% if items_update.updated_count == 1 %}
