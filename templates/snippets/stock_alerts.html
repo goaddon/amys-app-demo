@@ -95,7 +95,7 @@
 								return checkCreateItems(job_id, timeout + 20);
 							} else if (data.job_status === "finished") {
 								$(".job-status").html("{{ l.got_items }}");
-								$(".job-data").html("{{ l.data.created_items_count }}: " + data.created_items_count + ", {{ l.data.updated_items_count }}: " + data.updated_items_count + " and {{ l.data.deleted_items_count }}: " + data.deleted_items_count);
+								$(".job-data").html("{{ l.data.created_items_count }}: " + data.data.created_items_count + ", {{ l.data.updated_items_count }}: " + data.data.updated_items_count + " and {{ l.data.deleted_items_count }}: " + data.data.deleted_items_count);
 								return orderItems(500);
 							}
 						}
