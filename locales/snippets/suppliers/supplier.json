@@ -4,7 +4,7 @@
 		"ago": "ago",
 		"buttons": {
 			"destroy": "Destroy",
-			"restock": "Receive items"
+			"scan": "Scan items"
 		}
 	}
 }
