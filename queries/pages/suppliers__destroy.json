@@ -10,7 +10,7 @@
 		"klass": "items",
 		"query": {
 			"company_id": "{{ company_id }}",
-			"sku": {"$in" : "{{ skus }}"}
+			"sku": {"$in": "{{ skus }}"}
 		}
 	},
 	"create_item": {

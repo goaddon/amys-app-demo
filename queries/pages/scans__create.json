@@ -43,15 +43,5 @@
 		"document": {
 			"ordered": "{{ ordered }}"
 		}
-	},
-	"update_variant": {
-		"klass": "variants",
-		"query": {
-			"company_id": "{{ company_id }}",
-			"_id": "{{ _id }}"
-		},
-		"document": {
-			"stock": "{{ stock }}"
-		}
 	}
 }
