@@ -61,11 +61,13 @@
 			"_id": "{{ _id }}"
 		},
 		"document": {
-			"name": "{{ name }}",
-			"ean": "{{ ean }}",
-			"stock": "{{ stock }}",
-			"price": "{{ price }}"
-		}
+      "$set": {
+				"name": "{{ name }}",
+				"ean": "{{ ean }}",
+				"stock": "{{ stock }}",
+				"price": "{{ price }}"
+			}
+    }
 	},
   "soft_delete_item": {
 		"klass": "items",
@@ -74,7 +76,9 @@
 			"_id": "{{ _id }}"
 		},
 		"document": {
-			"stock": null
+			"$set": {
+				"stock": null
+			}
 		}
   }
 }

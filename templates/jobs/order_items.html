@@ -24,7 +24,7 @@
 				{% capture skus %}{{ skus }} {{ variant[0] }}{% endcapture %}
 			{% endfor %}
 
-			{% assign skus 									= skus | split: " " %}
+			{% assign skus 									= skus | split: " " | uniq %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: params.company_id, skus: skus %}
 			{% assign matchable_items 			= matchable_items_query.results %}
 

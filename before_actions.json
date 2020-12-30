@@ -1,11 +1,11 @@
 {
-	"authenticate": {
-		"api": false,
+  "authenticate": {
+    "api": false,
     "unauthenticated": false
-	},
-	"container": {
-		"supplier_1_items__index": "api",
-		"supplier_2_items__index": "api",
+  },
+  "container": {
+    "supplier_1_items__index": "api",
+    "supplier_2_items__index": "api",
     "static_pages__index": "unauthenticated"
-	}
+  }
 }

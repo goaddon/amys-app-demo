@@ -6,9 +6,11 @@
 			"_id": "{{ _id }}"
 		},
 		"document": {
-			"name": "{{ name }}",
-			"url": "{{ url }}",
-			"mail_address": "{{ mail_address }}"
-		}
+      "$set": {
+				"name": "{{ name }}",
+				"url": "{{ url }}",
+				"mail_address": "{{ mail_address }}"
+			}
+    }
 	}
 }

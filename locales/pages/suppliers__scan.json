@@ -1,5 +1,6 @@
 {
-	"en": {
-		"not_found": "The supplier was not found"
-	}
+  "en": {
+    "title": "Scan",
+    "not_found": "The supplier was not found"
+  }
 }

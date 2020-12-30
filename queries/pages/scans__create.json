@@ -41,7 +41,9 @@
 			"_id": "{{ _id }}"
 		},
 		"document": {
-			"ordered": "{{ ordered }}"
-		}
+      "$set": {
+				"ordered": "{{ ordered }}"
+			}
+    }
 	}
 }

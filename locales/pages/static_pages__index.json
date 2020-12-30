@@ -1,6 +1,7 @@
 {
-	"en": {
-		"headline": "Welcome",
-		"explainer": "Welcome to R1"
-	}
+  "en": {
+    "title": "Welcome to R1",
+    "headline": "Welcome",
+    "explainer": "Welcome to R1"
+  }
 }

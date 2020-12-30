@@ -1,9 +1,9 @@
 {
-	"en": {
-		"no_item": "No item exists from this supplier",
-		"item_not_ordered": "There are no current orders on this item",
-		"no_variant": "No variant exists",
-		"item_not_updated": "The item was not updated",
-		"success": "Success"
-	}
+  "en": {
+    "no_item": "No item exists from this supplier",
+    "item_not_ordered": "There are no current orders on this item",
+    "no_variant": "No variant exists",
+    "item_not_updated": "The item was not updated",
+    "success": "Success"
+  }
 }
