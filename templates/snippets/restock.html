@@ -3,23 +3,25 @@
 		<div class="col-sm-0 col-md-1 col-lg-2">
 		</div>
 		<div class="col-sm-12 col-md-10 col-lg-8 p-4">
-			<div class="bg-light restock-container py-5 px-1 px-md-2 mb-4 border rounded">
-				<h1 class="display-3">{{ variants_count }}</h1>
-				<h1 class="display-4">
-					{% if variants_count == 1 %}
-						{{ l.product }}
-					{% else %}
-						{{ l.products }}
-					{% endif %}
-					&nbsp;{{ l.out_of_stock }}
-				</h1>
+			<div class="bg-light py-5 px-1 px-md-2 mb-4 border rounded">
+				<div class="restock-container">
+					<h1 class="display-3">{{ variants_count }}</h1>
+					<h1 class="display-4">
+						{% if variants_count == 1 %}
+							{{ l.product }}
+						{% else %}
+							{{ l.products }}
+						{% endif %}
+						&nbsp;{{ l.out_of_stock }}
+					</h1>
+				</div>
+				<div class="job-status-container" style="display: none;">
+					<h1 class="display-4 job-status"></h1>
+					<div class="job-data"></div>
+				</div>
 			</div>
 			<div class="d-grid gap-2">
 				<button type="button" class="btn btn-outline-primary btn-lg compare-suppliers">{{ l.compare }}</button>
-			</div>
-			<div class="bg-light py-5 px-1 px-md-2 mb-4 border rounded">
-				<h1 class="display-4 job-status"></h1>
-				<div class="job-data"></div>
 			</div>
 		</div>
 		<div class="col-sm-0 col-md-1 col-lg-2">
@@ -115,6 +117,7 @@
 				success: function(data, status, xhr) {
 					if (data !== null) {
 						$(".restock-container").remove();
+						$(".job-status-container").show();
 						if (data.error_message !== undefined) {
 							return $(".job-status").html("{{ l.items_not_created }}: " + data.error_message);
 						} else if (data.job_id !== undefined) {
