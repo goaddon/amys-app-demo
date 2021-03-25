@@ -1,16 +1,16 @@
 <h5 class="mb-3">{{ l.headline }}</h5>
 <form class="update-supplier" action="{{ 'suppliers__update' | path_for: id: supplier._id, format: 'js' }}" method="patch" data-remote="true">
-	<div class="form-group">
+	<div class="mb-3">
 		<label for="name">{{ l.labels.name }}</label>
-		<input class="form-control mr-3" type="text" name="name" placeholder="{{ l.placeholders.name }}" value="{{ supplier.name }}">
+		<input class="form-control me-3" type="text" name="name" placeholder="{{ l.placeholders.name }}" value="{{ supplier.name }}">
 	</div>
-	<div class="form-group">
+	<div class="mb-3">
 		<label for="name">{{ l.labels.url }}</label>
-		<input class="form-control mr-3" type="text" name="url" placeholder="{{ l.placeholders.url }}" value="{{ supplier.url }}">
+		<input class="form-control me-3" type="text" name="url" placeholder="{{ l.placeholders.url }}" value="{{ supplier.url }}">
 	</div>
-	<div class="form-group">
+	<div class="mb-3">
 		<label for="name">{{ l.labels.mail_address }}</label>
-		<input class="form-control mr-3" type="text" name="mail_address" placeholder="{{ l.placeholders.mail_address }}" value="{{ supplier.mail_address }}">
+		<input class="form-control me-3" type="text" name="mail_address" placeholder="{{ l.placeholders.mail_address }}" value="{{ supplier.mail_address }}">
 	</div>
 	<input class="btn btn-outline-primary" type="submit" value="{{ l.buttons.update }}">
 </form>

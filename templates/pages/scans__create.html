@@ -11,11 +11,11 @@
 
 		{% if item == nil %}
 
-			alertify.error("{{ l.no_item }}");
+			flashAlert("error", "{{ l.no_item }}");
 
 		{% elsif 0 > item.ordered %}
 
-			alertify.error("{{ l.item_not_ordered }}");
+			flashAlert("error", "{{ l.item_not_ordered }}");
 
 		{% else %}
 
@@ -24,7 +24,7 @@
 
 			{% if variant == nil %}
 
-				alertify.error("{{ l.no_variant }}");
+				flashAlert("error", "{{ l.no_variant }}");
 
 			{% else %}
 
@@ -33,7 +33,7 @@
 
 				{% if items_update.matched_count != 1 %}
 
-					alertify.error("{{ l.item_not_updated }}");
+					flashAlert("error", "{{ l.item_not_updated }}");
 
 				{% else %}
 
@@ -41,11 +41,11 @@
 
 					{% if variants_update.code != 200 %}
 
-						alertify.error("{{ variants_update.code }}: {{ variants_update.body.error }}");
+						flashAlert("error", "{{ variants_update.code }}: {{ variants_update.body.error }}");
 
 					{% else %}
 
-						alertify.success("{{ l.success }}");
+						flashAlert("success", "{{ l.success }}");
 
 					{% endif %}
 				{% endif %}
