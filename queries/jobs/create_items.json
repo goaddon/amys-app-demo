@@ -16,7 +16,7 @@
     },
 		"projection": {
 			"_id": 1,
-			"ean": 1,
+			"ean": 1
 		}
 	},
 	"suppliers": {
