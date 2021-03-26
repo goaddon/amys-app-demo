@@ -4,7 +4,7 @@
 	{% assign supplier 					= suppliers_query.results.first %}
 
 	{% if supplier == nil %}
-		<h5 class="mb-3">{{ l.not_found }}</h5>
+		<h5 class="mb-4">{{ l.not_found }}</h5>
 	{% else %}
 
 		{% include "supplier" %}
