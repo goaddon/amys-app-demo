@@ -5,7 +5,11 @@
 		<div class="col-sm-12 col-md-10 col-lg-8 p-4">
 			<div class="bg-light py-5 px-1 px-md-2 mb-4 border rounded">
 				<div class="restock-container">
-					<h1 class="display-3">{{ variants_count }}</h1>
+					<h1 class="display-3">
+						<span class="px-3 border rounded-3">
+							{{ variants_count }}
+						</span>
+					</h1>
 					<h1 class="display-4">
 						{% if variants_count == 1 %}
 							{{ l.product }}
