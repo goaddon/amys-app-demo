@@ -15,7 +15,7 @@
 			{% assign suppliers 				= suppliers_query.results %}
 			{% assign suppliers_orders 	= nil | new_hash %}
 			{% assign variants 					= variants_query.results %}
-			{% assign ean_param 				= "" | split: " " %}
+			{% assign ean_param 				= "" | split: " " %}
 
 			{% for variant in variants %}
 
@@ -28,7 +28,7 @@
 
 			{% endfor %}
 
-			{% assign ean_param = ean_param | join: "," %}
+			{% assign ean_param = ean_param | join: "," %}
 
 			{% for supplier in suppliers %}
 
