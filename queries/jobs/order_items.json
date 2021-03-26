@@ -22,7 +22,6 @@
 		"projection": {
 			"_id": 1,
 			"name": 1,
-			"url": 1,
 			"mail_address": 1
 		}
 	},
