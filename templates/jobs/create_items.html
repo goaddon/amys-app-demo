@@ -14,16 +14,40 @@
 
 			{% assign suppliers 				= suppliers_query.results %}
 			{% assign suppliers_orders 	= nil | new_hash %}
-			{% assign variants 					= variants_query.results | to_hash: "sku" %}
+			{% assign variants 					= variants_query.results %}
+			{% assign ean_param 				= "" | split: " " %}
+
+			{% for variant in variants %}
+
+				{% if variant.ean != nil and variant.ean != "" %}
+
+					{% assign ean 			= variant.ean | decrypt %}
+					{% assign ean_param = ean_param | push_to_array: ean %}
+
+				{% endif %}
+
+			{% endfor %}
+
+			{% assign ean_param = ean_param | join: "," %}
 
 			{% for supplier in suppliers %}
 
-				{% assign inventory_response = "inventory" | webhook: url: supplier.url %}
+				{% if supplier.url != nil %}
+
+					{% assign supplier_url = supplier.url %}
+
+				{% else %}
+
+					{% capture supplier_url %}http://{{ project.url }}/supplier_items.json?eans={{ ean_param }}{% endcapture %}
+
+				{% endif %}
+
+				{% assign inventory_response = "inventory" | webhook: url: supplier_url %}
 
 				{% if inventory_response.code == 200 %}
 
 					{% assign items_query = "items" | db_find: company_id: params.company_id, supplier_id: supplier._id %}
-					{% assign items 			= items_query.results | to_hash: "sku" %}
+					{% assign items 			= items_query.results.items | to_hash: "sku" %}
 
 					{% for response_item in inventory_response.body %}
 

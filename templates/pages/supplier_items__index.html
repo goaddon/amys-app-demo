@@ -1,0 +1,20 @@
+{% if params.eans != nil %}
+
+  {% assign eans  = params.eans | split: "," %}
+  {% assign items = nil | new_hash %}
+
+  {% for ean in eans %}
+
+    {% capture name %}product-{{ ean }}{% endcapture %}
+    {% assign item = nil | new_hash: price: 1, stock: 1000, ean: ean, name: name %}
+    {% assign items = items | push_to_hash: ean, item %}
+
+  {% endfor %}
+
+  {"items": {{ items | json }}}
+
+{% else %}
+
+  {"items": {}}
+
+{% endif %}
