@@ -47,9 +47,9 @@
 				{% if inventory_response.code == 200 %}
 
 					{% assign items_query = "items" | db_find: company_id: params.company_id, supplier_id: supplier._id %}
-					{% assign items 			= items_query.results.items | to_hash: "sku" %}
+					{% assign items 			= items_query.results | to_hash: "sku" %}
 
-					{% for response_item in inventory_response.body %}
+					{% for response_item in inventory_response.body.items %}
 
 						{% assign response_sku 		= response_item[0] | encrypt %}
 						{% assign response_name 	= response_item[1].name | encrypt %}
