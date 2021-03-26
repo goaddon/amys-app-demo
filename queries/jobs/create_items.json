@@ -23,7 +23,6 @@
 		"klass": "suppliers",
 		"query": {
 			"company_id": "{{ company_id }}",
-			"url": {"$ne": null},
 			"mail_address": {"$ne": null}
 		},
 		"projection": {
