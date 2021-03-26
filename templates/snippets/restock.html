@@ -53,13 +53,13 @@
 					url: jobUrl().replace("id_placeholder", job_id),
 					success: function(data, status, xhr) {
 						if (data !== null) {
-							if (data.job_status === null || data.job_status === "in_progress") {
+							if (data.job_status === "" || data.job_status === null || data.job_status === "in_progress") {
 								$(".job-status").html("{{ l.ordering_items }}");
 								return checkOrderItems(job_id, timeout + 20);
 							} else if (data.job_status === "erred") {
 								return $(".job-status").html("{{ l.erred_ordering_items }}: " + data.error_message);
 							} else if (data.job_status === "finished") {
-								return location.href = itemOrderUrl().replace("id_placeholder", job_id);
+								return Turbo.visit(itemOrderUrl().replace("id_placeholder", job_id));
 							}
 						}
 					}

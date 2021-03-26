@@ -107,45 +107,47 @@
 		{% endif %}
 	{% endif %}
 
-	[
-		{% assign array_comma = false %}
+	{"results":
+		[
+			{% assign array_comma = false %}
 
-		{% for supplier in suppliers %}
+			{% for supplier in suppliers %}
 
-			{% assign supplier_id 		= supplier._id %}
-			{% assign supplier_order 	= suppliers_orders[supplier_id] %}
+				{% assign supplier_id 		= supplier._id %}
+				{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 
-			{% if supplier_order != nil and supplier_order.size > 0 %}
+				{% if supplier_order != nil and supplier_order.size > 0 %}
 
-				{% if array_comma %}
-					,
-				{% else %}
-					{% assign array_comma = true %}
+					{% if array_comma %}
+						,
+					{% else %}
+						{% assign array_comma = true %}
+					{% endif %}
+
+					{
+						"supplier_name": "{{ supplier.name }}",
+						"items": [
+
+							{% assign hash_comma = false %}
+
+							{% for supplier_order_line in supplier_order %}
+
+								{% if hash_comma %}
+									,
+								{% else %}
+									{% assign hash_comma = true %}
+								{% endif %}
+
+								{
+									"sku": "{{ supplier_order_line.sku | decrypt }}",
+									"name": "{{ supplier_order_line.name | decrypt }}",
+									"amount": {{ supplier_order_line.amount }}
+								}
+							{% endfor %}
+						]	
+					}
 				{% endif %}
-
-				{
-					"supplier_name": "{{ supplier.name }}",
-					"items": [
-
-						{% assign hash_comma = false %}
-
-						{% for supplier_order_line in supplier_order %}
-
-							{% if hash_comma %}
-								,
-							{% else %}
-								{% assign hash_comma = true %}
-							{% endif %}
-
-							{
-								"sku": "{{ supplier_order_line.sku | decrypt }}",
-								"name": "{{ supplier_order_line.name | decrypt }}",
-								"amount": {{ supplier_order_line.amount }}
-							}
-						{% endfor %}
-					]	
-				}
-			{% endif %}
-		{% endfor %}
-	]
+			{% endfor %}
+		]
+	}
 {% endif %}
