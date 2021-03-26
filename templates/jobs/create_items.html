@@ -29,11 +29,10 @@
 			{% endfor %}
 
 			{% assign ean_param = ean_param | join: "," %}
-			{{ ean_param | log_data }}
 
 			{% for supplier in suppliers %}
 
-				{% if supplier.url != nil %}
+				{% if supplier.url != nil and supplier.url != "" %}
 
 					{% assign supplier_url = supplier.url %}
 
