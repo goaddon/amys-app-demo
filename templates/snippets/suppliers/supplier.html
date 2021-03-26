@@ -13,7 +13,7 @@
 	</div>
 	<div class="col-auto ps-1 text-end my-auto">
 		<form action="{{ 'suppliers__destroy' | path_for: id: supplier_id, format: 'js' }}" method="post" data-remote="true">
-			<input type="hidden" name="_method" value="patch">
+			<input type="hidden" name="_method" value="delete">
 			<input type="submit" value="{{ l.buttons.destroy }}" class="btn btn-outline-danger">
 		</form>
 	</div>
