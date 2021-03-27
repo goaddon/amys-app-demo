@@ -85,7 +85,7 @@
 							{% if orderable > 0 %}
 
 								{% assign missing 					= missing | plus: orderable %}
-								{% assign ordered_item 			= nil | new_hash: item_id: item._id, sku: sku, ean: ean, name: item.name, amount: orderable %}
+								{% assign ordered_item 			= nil | new_hash: item_id: item._id, ean: ean, sku: item.sku, name: item.name, amount: orderable %}
 								{% assign item_supplier_id 	= item.supplier_id %}
 								{% assign supplier_orders 	= suppliers_orders[item_supplier_id] | push_to_array: ordered_item %}
 								{% assign suppliers_orders 	= suppliers_orders | push_to_hash: item.supplier_id, supplier_orders %}
