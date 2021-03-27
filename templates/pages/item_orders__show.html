@@ -9,7 +9,7 @@
     {% for supplier in job.data.results %}
       {% for item in supplier.items %}
 
-        {% capture eans %}{{ eans }} {{ item.ean }}{% endcapture %}
+        {% capture eans %}{{ eans }} {{ item.ean | encrypt }}{% endcapture %}
 
       {% endfor %}
     {% endfor %}
