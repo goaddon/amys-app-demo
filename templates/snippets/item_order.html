@@ -45,7 +45,7 @@
 													{% capture variations %}{{ variations }}{{ variation.type | decrypt | strip_html }}: {{ variation.value | decrypt | strip_html }}{% endcapture %}
 												{% endfor %}
 												{% if variations != "" %}
-													({{ variations }})
+													&nbsp;({{ variations }})
 												{% endif %}
 											</a>
 										{% endif %}
