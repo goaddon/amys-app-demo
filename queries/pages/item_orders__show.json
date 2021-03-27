@@ -10,7 +10,8 @@
     "projection": {
       "_id": 1,
       "ean": 1,
-      "product_id": 1
+      "product_id": 1,
+      "variations": 1
     }
   },
   "products": {
