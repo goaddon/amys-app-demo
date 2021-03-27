@@ -41,7 +41,7 @@
 
 					{% if variants_update.code != 200 %}
 
-						flashAlert("error", "{{ variants_update.code }}: {{ variants_update.body.error }}");
+						flashAlert("error", "{{ l.shop_api_not_updated }}. {{ variants_update.body.error }}");
 
 					{% else %}
 
