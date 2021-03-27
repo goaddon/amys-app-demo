@@ -10,7 +10,7 @@
 
 			{% assign suppliers 				= suppliers_query.results %}
 			{% assign suppliers_orders 	= nil | new_hash %}
-			{% assign variants 					= variants_query.results | to_hash: "sku" %}
+			{% assign variants 					= variants_query.results | to_hash: "ean" %}
 			{% assign variants_items 		= nil | new_hash %}
 			{% assign array 						= "" | split: " " %}
 
@@ -18,40 +18,41 @@
 				{% assign variants_items = variants_items | push_to_hash: variant[0], array %}
 			{% endfor %}
 
-			{% assign skus = "" %}
+			{% assign eans = "" %}
 
 			{% for variant in variants %}
-				{% capture skus %}{{ skus }} {{ variant[0] }}{% endcapture %}
+				{% capture eans %}{{ eans }} {{ variant[0] }}{% endcapture %}
 			{% endfor %}
 
-			{% assign skus 									= skus | split: " " | uniq %}
-			{% assign matchable_items_query = "matchable_items" | db_find: company_id: params.company_id, skus: skus %}
+			{% assign eans 									= eans | split: " " | uniq %}
+			{% assign matchable_items_query = "matchable_items" | db_find: company_id: params.company_id, eans: eans %}
+			{{ matchable_items_query | log }}
 			{% assign matchable_items 			= matchable_items_query.results %}
 
 			{% for matchable_item in matchable_items %}
 
-				{% assign sku = matchable_item.sku %}
+				{% assign ean = matchable_item.ean %}
 
-				{% if variants_items[sku] != nil %}
+				{% if variants_items[ean] != nil %}
 
 					{% assign item_ordered = matchable_item.ordered | plus: 0 %}
 
 					{% if item_ordered > 0 %}
 
-						{% assign variant 				= variants[sku] %}
+						{% assign variant 				= variants[ean] %}
 						{% assign variant_ordered = variant.ordered | plus: 0 %}
 						{% assign ordered 				= variant_ordered | plus: item_ordered %}
 						{% assign variant 				= variant | push_to_hash: "ordered", ordered %}
-						{% assign variants 				= variants | push_to_hash: sku, variant %}
+						{% assign variants 				= variants | push_to_hash: ean, variant %}
 
 					{% endif %}
 
 					{% if matchable_item.stock != nil %}
 
 						{% assign matchup_item 		= nil | new_hash: _id: matchable_item._id, name: matchable_item.name, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock, ordered: matchable_item.ordered %}
-						{% assign sku_matchups 		= variants_items[sku] %}
-						{% assign matchup_items 	= sku_matchups | push_to_array: matchup_item %}
-						{% assign variants_items 	= variants_items | push_to_hash: sku, matchup_items %}
+						{% assign ean_matchups 		= variants_items[ean] %}
+						{% assign matchup_items 	= ean_matchups | push_to_array: matchup_item %}
+						{% assign variants_items 	= variants_items | push_to_hash: ean, matchup_items %}
 
 					{% endif %}
 				{% endif %}
@@ -69,8 +70,8 @@
 
 				{% if variant_items[1].size > 0 %}
 
-					{% assign sku 					= variant_items[0] %}
-					{% assign variant 			= variants[sku] %}
+					{% assign ean 					= variant_items[0] %}
+					{% assign variant 			= variants[ean] %}
 					{% assign stock 				= variant.stock | plus: 0 %}
 					{% assign ordered 			= variant.ordered | plus: 0 %}
 					{% assign missing 			= stock | plus: ordered %}
@@ -84,7 +85,7 @@
 							{% if orderable > 0 %}
 
 								{% assign missing 					= missing | plus: orderable %}
-								{% assign ordered_item 			= nil | new_hash: item_id: item._id, sku: sku, name: item.name, amount: orderable %}
+								{% assign ordered_item 			= nil | new_hash: item_id: item._id, sku: sku, ean: ean, name: item.name, amount: orderable %}
 								{% assign item_supplier_id 	= item.supplier_id %}
 								{% assign supplier_orders 	= suppliers_orders[item_supplier_id] | push_to_array: ordered_item %}
 								{% assign suppliers_orders 	= suppliers_orders | push_to_hash: item.supplier_id, supplier_orders %}
@@ -101,7 +102,7 @@
 				{% assign supplier_id 		= supplier._id %}
 				{% assign supplier_order 	= suppliers_orders[supplier_id] %}
 				{% if supplier_order != nil and supplier_order.size > 0 %}
-					{% assign send_result = "supplier_order" | send_email: to: supplier.mail_address, display_name: "Amys Outlet", supplier_name: supplier.name, supplier_order: supplier_order %}
+					{% assign send_result = "supplier_order" | send_email: to: supplier.mail_address, display_name: project.name, supplier_name: supplier.name, supplier_order: supplier_order %}
 				{% endif %}
 			{% endfor %}
 		{% endif %}
@@ -140,6 +141,7 @@
 
 								{
 									"sku": "{{ supplier_order_line.sku | decrypt }}",
+									"ean": "{{ supplier_order_line.ean | decrypt }}",
 									"name": "{{ supplier_order_line.name | decrypt }}",
 									"amount": {{ supplier_order_line.amount }}
 								}

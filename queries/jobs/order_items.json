@@ -5,11 +5,15 @@
 			"company_id": "{{ company_id }}",
 			"stock": {
 				"$lt": 0
+			},
+			"ean": {
+				"$ne": null
 			}
 		},
 		"projection": {
 			"_id": 1,
 			"sku": 1,
+			"ean": 1,
 			"stock": 1
 		}
 	},
@@ -29,11 +33,12 @@
 		"klass": "items",
 		"query": {
 			"company_id": "{{ company_id }}",
-			"sku": {"$in": "{{ skus }}"}
+			"ean": {"$in": "{{ eans }}"}
 		},
 		"projection": {
 			"_id": 1,
 			"sku": 1,
+			"ean": 1,
 			"name": 1,
 			"price": 1,
 			"stock": 1,
