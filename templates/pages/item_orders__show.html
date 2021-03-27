@@ -16,7 +16,7 @@
 
     {% assign eans = eans | split: " " | uniq %}
 
-    {% assign variants_query = "variants" | db_find: company_id: params.company_id, eans: eans %}
+    {% assign variants_query = "variants" | db_find: company_id: account._id, eans: eans %}
 
     {% if variants_query.results.size > 0 %}
 
@@ -29,7 +29,7 @@
       {% endfor %}
 
       {% assign product_ids     = product_ids | split: " " | uniq %}
-      {% assign products_query  = "products" | db_find: company_id: params.company_id, product_ids: product_ids %}
+      {% assign products_query  = "products" | db_find: company_id: account._id, product_ids: product_ids %}
 
     {% endif %}
 

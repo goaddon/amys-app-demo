@@ -28,10 +28,10 @@
 						<tr>
 							<td>{{ item.sku }}</td>
 							<td>
-								{% assign item_ean = item.ean %}
+								{% assign item_ean = item.ean | encrypt %}
 								{% if variants[item_ean] != nil %}
 									{% assign variant 		= variants[item_ean] %}
-									{% assign product_id 	= variant[item_ean].product_id %}
+									{% assign product_id 	= variant.product_id %}
 									{% if product_id != nil %}
 										{% assign product = products[product_id] %}
 										{% if product != nil %}
