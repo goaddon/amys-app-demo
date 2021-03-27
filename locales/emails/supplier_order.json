@@ -3,7 +3,8 @@
 		"subject": "Please add to our order",
 		"greeting": "Hello",
 		"intro": "Please add the following items to our current order.",
-		"sku": "SKU",
+    "sku": "SKU",
+    "ean": "EAN",
 		"name": "Name",
 		"amount": "Amount"
 	}

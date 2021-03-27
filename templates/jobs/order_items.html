@@ -26,7 +26,6 @@
 
 			{% assign eans 									= eans | split: " " | uniq %}
 			{% assign matchable_items_query = "matchable_items" | db_find: company_id: params.company_id, eans: eans %}
-			{{ matchable_items_query | log }}
 			{% assign matchable_items 			= matchable_items_query.results %}
 
 			{% for matchable_item in matchable_items %}
@@ -49,7 +48,7 @@
 
 					{% if matchable_item.stock != nil %}
 
-						{% assign matchup_item 		= nil | new_hash: _id: matchable_item._id, name: matchable_item.name, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock, ordered: matchable_item.ordered %}
+						{% assign matchup_item 		= nil | new_hash: _id: matchable_item._id, sku: matchable_item.sku, name: matchable_item.name, supplier_id: matchable_item.supplier_id, price: matchable_item.price, stock: matchable_item.stock, ordered: matchable_item.ordered %}
 						{% assign ean_matchups 		= variants_items[ean] %}
 						{% assign matchup_items 	= ean_matchups | push_to_array: matchup_item %}
 						{% assign variants_items 	= variants_items | push_to_hash: ean, matchup_items %}
@@ -65,7 +64,7 @@
 				{% assign suppliers_orders = suppliers_orders | push_to_hash: supplier._id, array %}
 
 			{% endfor %}
-
+			{{variants_items | log}}
 			{% for variant_items in variants_items %}
 
 				{% if variant_items[1].size > 0 %}
