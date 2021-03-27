@@ -15,7 +15,7 @@
 					</tr>
 					<tr>
 						<td>
-							<b>{{ l.sku }}</b>
+							<b>{{ l.ean }}</b>
 						</td>
 						<td>
 							<b>{{ l.name }}</b>
@@ -26,7 +26,7 @@
 					</tr>
 					{% for item in supplier.items %}
 						<tr>
-							<td>{{ item.sku }}</td>
+							<td>{{ item.ean | strip_html }}</td>
 							<td>
 								{% assign item_ean = item.ean | encrypt %}
 								{% if variants[item_ean] != nil %}
