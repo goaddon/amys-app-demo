@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "klass": "variants",
+    "query": {
+      "company_id": "{{ company_id }}",
+      "ean": {
+        "$in": "{{ eans }}"
+      }
+    },
+    "projection": {
+      "_id": 1,
+      "ean": 1,
+      "product_id": 1
+    }
+  },
+  "products": {
+    "klass": "products",
+    "query": {
+      "company_id": "{{ company_id }}",
+      "_id": {
+        "$in": "{{ product_ids }}"
+      }
+    },
+    "projection": {
+      "_id": 1,
+      "name": 1
+    }
+  }
+
+}

@@ -10,10 +10,10 @@
 				"$ne": null
 			}
 		},
-    "pagination": {
-      "page": 0,
-      "per_page": 50
-    },
+		"pagination": {
+			"page": 0,
+			"per_page": 50
+		},
 		"projection": {
 			"_id": 1,
 			"ean": 1

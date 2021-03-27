@@ -27,7 +27,19 @@
 					{% for item in supplier.items %}
 						<tr>
 							<td>{{ item.sku }}</td>
-							<td>{{ item.name }}</td>
+							<td>
+								{% assign item_ean = item.ean %}
+								{% if variants[item_ean] != nil %}
+									{% assign variant 		= variants[item_ean] %}
+									{% assign product_id 	= variant[item_ean].product_id %}
+									{% if product_id != nil %}
+										{% assign product = products[product_id] %}
+										{% if product != nil %}
+											<a href="{{ 'variants__show' | path_for: id: variant._id }}">{{ product.name | decrypt | strip_html }}</a>
+										{% endif %}
+									{% endif %}
+								{% endif %}
+							</td>
 							<td>{{ item.amount }}</td>
 						</tr>
 					{% endfor %}

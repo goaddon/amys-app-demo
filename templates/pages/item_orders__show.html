@@ -1,5 +1,42 @@
 {% if account != nil %}
 
 	{% assign job = params.id | get_job %}
+
+  {% if job.data.results.size > 0 %}
+
+    {% assign eans = "" %}
+
+    {% for supplier in job.data.results %}
+      {% for item in supplier.items %}
+
+        {% capture eans %}{{ eans }} {{ item.ean }}{% endcapture %}
+
+      {% endfor %}
+    {% endfor %}
+
+    {% assign eans = eans | split: " " | uniq %}
+
+    {% assign variants_query = "variants" | db_find: company_id: params.company_id, eans: eans %}
+
+    {% if variants_query.results.size > 0 %}
+
+      {% assign product_ids = "" %}
+
+      {% for variant in variants_query.results %}
+
+        {% capture product_ids %}{{ product_ids }} {{ variant.product_id }}{% endcapture %}
+
+      {% endfor %}
+
+      {% assign product_ids     = product_ids | split: " " | uniq %}
+      {% assign products_query  = "products" | db_find: company_id: params.company_id, product_ids: product_ids %}
+
+    {% endif %}
+
+    {% assign variants = variants_query.results | to_hash: "ean" %}
+    {% assign products = products_query.results | to_hash: "_id" %}
+
+  {% endif %}
+
 	{% include "item_order" %}
 {% endif %}
