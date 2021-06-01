@@ -1,0 +1,5 @@
+{% assign items_deletion            = "destroy_items" | db_delete_many: company_id: account._id %}
+{% assign suppliers_deletion        = "destroy_suppliers" | db_delete_many: company_id: account._id %}
+{% assign account_deletion          = "destroy_account" | db_delete_one: _id: account._id %}
+
+{"url": "{{ 'accounts__index' | path_for }}"}
